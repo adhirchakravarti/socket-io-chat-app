@@ -38,6 +38,9 @@ module.exports = {
     },
     mode,
     devtool,
+    devServer: {
+        historyApiFallback: true
+    },
     module: {
         rules: [
             {
