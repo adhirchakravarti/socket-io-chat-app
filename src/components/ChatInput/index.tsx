@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {makeStyles, createStyles, Theme} from "@material-ui/core/styles";
@@ -22,10 +22,31 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-function ChatInput(): JSX.Element {
+interface ChatInputProps {
+    onSubmit: (message: string) => void;
+}
+
+function ChatInput({onSubmit}: ChatInputProps): JSX.Element {
     const classes = useStyles();
+    const [inputValue, setInputValue] = useState("");
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        // console.log(e.target.value);
+        const {value} = e.target;
+        setInputValue(value);
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+        // console.log(e, e.target);
+        e.preventDefault();
+        if (inputValue.trim().length > 0) {
+            onSubmit(inputValue);
+            setInputValue("");
+        }
+    };
+
     return (
-        <div className={classes.root}>
+        <form className={classes.root} onSubmit={handleSubmit}>
             <TextField
                 id="outlined-full-width"
                 label="Label"
@@ -37,11 +58,13 @@ function ChatInput(): JSX.Element {
                 variant="outlined"
                 size="small"
                 className={classes.input}
+                onChange={handleInputChange}
+                value={inputValue}
             />
-            <Button variant="contained" size="large" color="secondary">
+            <Button variant="contained" size="large" color="secondary" type="submit">
                 Send
             </Button>
-        </div>
+        </form>
     );
 }
 
