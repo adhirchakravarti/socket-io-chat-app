@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 
 import Header from "../Header";
 import ChatWindow from "../ChatWindow";
-import TabPanel from "components/TabPanel";
+import TabPanel from "../TabPanel";
 
 const tabs = [
     {label: "Chat", link: "chat"},
@@ -12,7 +12,6 @@ const tabs = [
 ];
 
 function Chat(): JSX.Element {
-    // return <h1>Chat Component!</h1>;
     return (
         <Container maxWidth="xl">
             <Grid
@@ -28,9 +27,6 @@ function Chat(): JSX.Element {
                     <Header title="Docler Chat App" />
                     <TabPanel tabs={tabs} />
                 </Grid>
-                {/* <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-                    <TabPanel tabs={tabs} />
-                </Grid> */}
                 <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
                     <ChatWindow />
                 </Grid>

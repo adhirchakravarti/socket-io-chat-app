@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {makeStyles, createStyles, Theme} from "@material-ui/core/styles";
+import {makeStyles, createStyles} from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             display: "flex",

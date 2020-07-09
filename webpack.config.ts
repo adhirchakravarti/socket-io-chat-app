@@ -4,7 +4,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
 // import path from "path";
 // import webpack, {Configuration} from "webpack";
@@ -39,7 +39,8 @@ module.exports = {
     mode,
     devtool,
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
+        port: 9000
     },
     module: {
         rules: [
@@ -93,7 +94,7 @@ module.exports = {
             }
         }),
         new CleanWebpackPlugin(),
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
         new CompressionWebpackPlugin({
             filename: "[path].br[query]",
             algorithm: "brotliCompress",
