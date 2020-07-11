@@ -1,7 +1,9 @@
 import React, {useState} from "react";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
+import TextInput from "../TextInput";
+import {marginType, inputSize, inputVariant} from "../ChatWindow/types";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -14,10 +16,6 @@ const useStyles = makeStyles(() =>
             "& > * + *": {
                 margin: "0rem 0rem 0rem 1rem"
             }
-        },
-        input: {
-            display: "flex",
-            flexGrow: 1
         }
     })
 );
@@ -36,7 +34,7 @@ function ChatInput({onSubmit}: ChatInputProps): JSX.Element {
         setInputValue(value);
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    const handleSubmit = (e: React.MouseEvent): void => {
         // console.log(e, e.target);
         e.preventDefault();
         if (inputValue.trim().length > 0) {
@@ -46,25 +44,26 @@ function ChatInput({onSubmit}: ChatInputProps): JSX.Element {
     };
 
     return (
-        <form className={classes.root} onSubmit={handleSubmit}>
-            <TextField
-                id="outlined-full-width"
-                label="Label"
-                placeholder="Enter chat message..."
-                margin="dense"
-                InputLabelProps={{
-                    shrink: true
-                }}
-                variant="outlined"
-                size="small"
-                className={classes.input}
-                onChange={handleInputChange}
-                value={inputValue}
+        <Box className={classes.root}>
+            <TextInput
+                labelText="Chat"
+                placeHolder="Enter chat message..."
+                marginType={marginType.dense}
+                inputSize={inputSize.small}
+                inputVariant={inputVariant.outlined}
+                inputValue={inputValue}
+                onInputChange={handleInputChange}
             />
-            <Button variant="contained" size="large" color="secondary" type="submit">
+            <Button
+                variant="contained"
+                size="large"
+                color="secondary"
+                type="button"
+                onClick={handleSubmit}
+            >
                 Send
             </Button>
-        </form>
+        </Box>
     );
 }
 

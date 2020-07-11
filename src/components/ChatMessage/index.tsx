@@ -46,7 +46,7 @@ function ChatMessage({
     return (
         <Paper elevation={4} className={classes.root}>
             <Box className={classes.container}>
-                <Typography variant="body2" gutterBottom>
+                <Typography variant="h6" gutterBottom>
                     {message.text}
                 </Typography>
                 <Typography variant="caption" gutterBottom>

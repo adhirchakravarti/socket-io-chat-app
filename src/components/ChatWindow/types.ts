@@ -5,6 +5,22 @@ import {CREATE_CONNECTION, SEND_MESSAGE, RECEIVE_MESSAGE, SET_USERNAME} from "./
 //     id: string;
 // };
 
+export enum marginType {
+    normal = "normal",
+    dense = "dense"
+}
+
+export enum inputSize {
+    medium = "medium",
+    small = "small"
+}
+
+export enum inputVariant {
+    outlined = "outlined",
+    standard = "standard",
+    filled = "filled"
+}
+
 export type Socket = SocketIO.Socket;
 
 export interface ChatState {

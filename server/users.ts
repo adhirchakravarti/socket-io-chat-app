@@ -32,8 +32,9 @@ class UserService {
     removeUser(socketId) {
         const userIndex = this.users.findIndex((user) => user.socketId === socketId);
         if (userIndex >= 0) {
+            const userName = this.users[userIndex].name;
             this.users.splice(userIndex, 1);
-            return `User with socketId ${socketId} deleted`;
+            return `User with name ${userName} has left the chat`;
         }
         return `User with socketId ${socketId} not found`;
     }
