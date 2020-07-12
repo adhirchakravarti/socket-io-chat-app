@@ -1,4 +1,4 @@
-import {CREATE_CONNECTION, SEND_MESSAGE, RECEIVE_MESSAGE, SET_USERNAME} from "./constants";
+import {CREATE_CONNECTION, SEND_MESSAGE, RECEIVE_MESSAGE} from "./constants";
 
 // export type Socket = {
 //     connected: boolean;
@@ -25,7 +25,6 @@ export type Socket = SocketIO.Socket;
 
 export interface ChatState {
     messages: Message[];
-    socket: Socket;
     userName: string;
 }
 
@@ -60,15 +59,4 @@ interface ReceiveMessageAction {
     };
 }
 
-interface SetUserNameAction {
-    type: typeof SET_USERNAME;
-    payload: {
-        userName: string;
-    };
-}
-
-export type ChatActionTypes =
-    | CreateConnectionAction
-    | SendMessageAction
-    | ReceiveMessageAction
-    | SetUserNameAction;
+export type ChatActionTypes = CreateConnectionAction | SendMessageAction | ReceiveMessageAction;

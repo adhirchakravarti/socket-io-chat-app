@@ -1,4 +1,4 @@
-import {CREATE_CONNECTION, RECEIVE_MESSAGE, SET_USERNAME} from "./constants";
+import {CREATE_CONNECTION, RECEIVE_MESSAGE} from "./constants";
 import {ChatActionTypes, Message} from "./types";
 
 export function createConnection(): ChatActionTypes {
@@ -12,15 +12,6 @@ export function receiveMessage(message: Message): ChatActionTypes {
         type: RECEIVE_MESSAGE,
         payload: {
             message
-        }
-    };
-}
-
-export function setUserName(userName: string): ChatActionTypes {
-    return {
-        type: SET_USERNAME,
-        payload: {
-            userName
         }
     };
 }

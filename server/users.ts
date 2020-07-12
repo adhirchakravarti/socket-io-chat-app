@@ -14,7 +14,7 @@ class UserService {
         return this.users;
     }
 
-    addNewUser(socket) {
+    addNewUser(socket: SocketIO.Socket) {
         const createdUser = this.generateUserName();
         const userIndex = this.users.findIndex((user) => user.name === createdUser);
         if (userIndex >= 0) {
@@ -27,6 +27,22 @@ class UserService {
             });
         }
         return createdUser;
+    }
+
+    changeUserName(socketId: string, newUserName: string) {
+        return new Promise((resolve, reject) => {
+            const users = [...this.getUsers()];
+            const userIndex = users.findIndex((user) => user.socketId === socketId);
+            if (userIndex >= 0) {
+                const user = users[userIndex];
+                user.name = newUserName;
+                users.splice(userIndex, 1, user);
+                this.users = [...users];
+                resolve("success");
+            }
+            reject("not found");
+            // return `user with socketId ${socketId} not found!`;
+        });
     }
 
     removeUser(socketId) {
