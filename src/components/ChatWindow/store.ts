@@ -30,8 +30,9 @@ store.subscribe(() => {
     console.log("new client state", store.getState());
 });
 // store.dispatch({type: "chatServer/hello", data: "Hello!"});
-setTimeout(() => {
-    store.dispatch({type: "chatServer/SET_USERNAME", payload: {userName: "Jack"}});
-}, 20000);
+// store.dispatch({type: "chatClient/SOCKET_ID", payload: {socketId: socket.id}});
+// setTimeout(() => {
+//     store.dispatch({type: "chatServer/SET_USERNAME", payload: {userName: "Jack"}});
+// }, 20000);
 
 export default store;

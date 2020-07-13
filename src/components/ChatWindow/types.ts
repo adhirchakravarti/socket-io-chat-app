@@ -26,11 +26,14 @@ export type Socket = SocketIO.Socket;
 export interface ChatState {
     messages: Message[];
     userName: string;
+    socketId: string;
+    theme: string;
 }
 
 export interface Message {
     id: string;
     sender: string;
+    socketId: string;
     text: string;
     time: number;
 }

@@ -20,12 +20,12 @@ const useStyles = makeStyles(() =>
 
 interface ChatMessageListProps {
     messages: Message[];
-    userName: string;
+    socketId: string;
 }
 
 function ChatMessageList({
     messages,
-    userName
+    socketId
 }: ChatMessageListProps): React.FunctionComponentElement<ChatMessageListProps> {
     const classes = useStyles();
     const listRef = React.createRef<HTMLUListElement>();
@@ -37,7 +37,7 @@ function ChatMessageList({
         <List ref={listRef} className={classes.list}>
             {messages?.length > 0 &&
                 messages?.map((message) => {
-                    const sender = message.sender === userName ? "self" : "other";
+                    const sender = message.socketId === socketId ? "self" : "other";
                     if (message.sender === "Server") {
                         return <ServerMessage key={message.id} message={message} />;
                     }

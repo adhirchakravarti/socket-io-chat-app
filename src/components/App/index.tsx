@@ -4,11 +4,14 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import GlobalResponsiveFont from "../../globalResponsiveFont";
+import {ThemeProvider} from "@material-ui/core/styles";
 
 import Header from "../Header";
 import UserSettings from "../UserSettings";
 import ChatWindow from "../ChatWindow";
 import TabPanel from "../TabPanel";
+import {lightTheme, darkTheme} from "../../theme";
+console.log("Themes = ", lightTheme, darkTheme);
 
 const tabs = [
     {label: "Chat", link: "chat"},
@@ -17,35 +20,37 @@ const tabs = [
 
 function App(): JSX.Element {
     return (
-        <Router>
-            <CssBaseline />
-            <GlobalResponsiveFont />
-            <Switch>
-                <Container maxWidth="xl">
-                    <Grid
-                        container
-                        direction="column"
-                        justify="center"
-                        alignItems="stretch"
-                        alignContent="stretch"
-                        xl={12}
-                        spacing={2}
-                    >
-                        <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-                            <Header title="Docler Chat App" />
-                            <TabPanel tabs={tabs} />
+        <ThemeProvider theme={lightTheme}>
+            <Router>
+                <CssBaseline />
+                <GlobalResponsiveFont />
+                <Switch>
+                    <Container maxWidth="xl">
+                        <Grid
+                            container
+                            direction="column"
+                            justify="center"
+                            alignItems="stretch"
+                            alignContent="stretch"
+                            xl={12}
+                            spacing={2}
+                        >
+                            <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                                <Header title="Docler Chat App" />
+                                <TabPanel tabs={tabs} />
+                            </Grid>
+                            <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                                <Route path="/" exact>
+                                    <Redirect to="/chat" />
+                                </Route>
+                                <Route path="/chat" component={ChatWindow} />
+                                <Route path="/settings" component={UserSettings} />
+                            </Grid>
                         </Grid>
-                        <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-                            <Route path="/" exact>
-                                <Redirect to="/chat" />
-                            </Route>
-                            <Route path="/chat" component={ChatWindow} />
-                            <Route path="/settings" component={UserSettings} />
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Switch>
-        </Router>
+                    </Container>
+                </Switch>
+            </Router>
+        </ThemeProvider>
     );
 }
 

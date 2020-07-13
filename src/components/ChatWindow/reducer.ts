@@ -1,17 +1,26 @@
 import {original, produce, setAutoFreeze} from "immer";
 setAutoFreeze(false);
 
-import {SET_USERNAME_SUCCESS, RECEIVE_MESSAGE} from "./chatServerConstants";
+import {SET_USERNAME_SUCCESS, RECEIVE_MESSAGE, SOCKET_ID} from "./chatServerConstants";
 import {ChatState, ChatActionTypes, Message} from "./types";
 import {Reducer} from "react";
 
 export const initialState: ChatState = {
     messages: [],
-    userName: ""
+    userName: "",
+    socketId: "",
+    theme: ""
 };
 
 const chatReducer: Reducer<ChatState, ChatActionTypes> = produce((draft, action) => {
     switch (action.type) {
+        case SOCKET_ID: {
+            console.log(action);
+            const {socketId} = action.payload;
+            draft.socketId = socketId;
+            break;
+        }
+
         case SET_USERNAME_SUCCESS: {
             const {userName} = action.payload;
             draft.userName = userName;

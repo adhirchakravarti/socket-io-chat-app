@@ -30,7 +30,10 @@ const styles = (theme: Theme): StyleRules => ({
     },
     listContainer: {
         display: "flex",
-        height: "88%"
+        height: "72vh",
+        [theme.breakpoints.down("xs")]: {
+            height: "75vh"
+        }
     },
     list: {
         width: "100%",
@@ -63,6 +66,7 @@ interface ChatWindowProps {
     classes: Classes;
     messages: Message[];
     userName: string;
+    socketId: string;
     // setNewUserName: (userName) => Dispatch;
     getInitialUserName: () => Dispatch;
     sendNewMessage: (message) => Dispatch;
@@ -73,7 +77,8 @@ const mapStateToProps = (state) => {
     console.log("reducer state = ", state);
     return {
         messages: state.chatReducer.messages,
-        userName: state.chatReducer.userName
+        userName: state.chatReducer.userName,
+        socketId: state.chatReducer.socketId
     };
 };
 
@@ -97,6 +102,7 @@ class ChatWindow extends React.Component<ChatWindowProps> {
             id: uuidv4(),
             text: message,
             sender: this.props.userName,
+            socketId: this.props.socketId,
             time: new Date().getTime()
         };
         // this.state.socket.emit("chat message", newMessage, (response) => {
@@ -114,7 +120,7 @@ class ChatWindow extends React.Component<ChatWindowProps> {
                     <Box component="div" className={classes.listContainer}>
                         <ChatMessageList
                             messages={this.props.messages}
-                            userName={this.props.userName}
+                            socketId={this.props.socketId}
                         />
                     </Box>
                     <Box className={classes.input}>

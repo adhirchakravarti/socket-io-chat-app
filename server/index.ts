@@ -19,7 +19,8 @@ const createMessage = (text: string) => {
         id: uuidv4(),
         text: text,
         time: new Date().getTime(),
-        sender: "Server"
+        sender: "Server",
+        socketId: ""
     };
 };
 
@@ -29,6 +30,7 @@ io.on("connection", function (socket) {
     console.log(user, userServ.getUsers());
     // socket.emit("welcome", user);
     socket.emit("action", {type: "chatClient/SET_USERNAME_SUCCESS", payload: {userName: user}});
+    socket.emit("action", {type: "chatClient/SOCKET_ID", payload: {socketId: socket.id}});
     const joinNotificationMessage = createMessage(`${user} has joined the chat!`);
     // socket.broadcast.emit("broadcast", joinNotificationMessage);
     io.emit("action", {
