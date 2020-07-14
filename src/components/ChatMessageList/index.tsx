@@ -3,7 +3,7 @@ import List from "@material-ui/core/List";
 // import ListItem from "@material-ui/core/ListItem";
 // import ListItemText from "@material-ui/core/ListItemText";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
-import {Message} from "../../Types/index";
+import {Message} from "../../types/index";
 import ChatMessage from "../ChatMessage";
 import ServerMessage from "../ServerMessage";
 
@@ -21,11 +21,13 @@ const useStyles = makeStyles(() =>
 interface ChatMessageListProps {
     messages: Message[];
     socketId: string;
+    clock: string;
 }
 
 function ChatMessageList({
     messages,
-    socketId
+    socketId,
+    clock
 }: ChatMessageListProps): React.FunctionComponentElement<ChatMessageListProps> {
     const classes = useStyles();
     const listRef = React.createRef<HTMLUListElement>();
@@ -39,9 +41,16 @@ function ChatMessageList({
                 messages?.map((message) => {
                     const sender = message.socketId === socketId ? "self" : "other";
                     if (message.sender === "Server") {
-                        return <ServerMessage key={message.id} message={message} />;
+                        return <ServerMessage key={message.id} message={message} clock={clock} />;
                     }
-                    return <ChatMessage key={message.id} message={message} sender={sender} />;
+                    return (
+                        <ChatMessage
+                            key={message.id}
+                            message={message}
+                            sender={sender}
+                            clock={clock}
+                        />
+                    );
                 })}
         </List>
     );

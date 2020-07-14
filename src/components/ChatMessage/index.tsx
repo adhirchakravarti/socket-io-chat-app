@@ -1,7 +1,8 @@
 import React from "react";
+import moment from "moment";
 import Paper from "@material-ui/core/Paper";
 import {makeStyles, createStyles, Theme} from "@material-ui/core/styles";
-import {Message as ChatMessage} from "../../Types/index";
+import {Message as ChatMessage} from "../../types/index";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 
@@ -39,13 +40,16 @@ const useStyles = makeStyles((theme: Theme) =>
 interface MessageProps {
     message: ChatMessage;
     sender: string;
+    clock: string;
 }
 
 function ChatMessage({
     message,
-    sender
+    sender,
+    clock
 }: MessageProps): React.FunctionComponentElement<MessageProps> {
     const classes = useStyles({sender});
+    const timeFormat = clock === "24" ? "MMM D YYYY HH:mm:ss" : "MMM D YYYY h:mm:ss a";
     return (
         <Paper elevation={4} className={classes.root}>
             <Box className={classes.container}>
@@ -54,6 +58,9 @@ function ChatMessage({
                 </Typography>
                 <Typography variant="caption" gutterBottom>
                     {message.sender}
+                </Typography>
+                <Typography variant="caption" gutterBottom>
+                    {moment(message.time).format(timeFormat)}
                 </Typography>
             </Box>
         </Paper>

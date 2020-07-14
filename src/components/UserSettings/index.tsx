@@ -6,10 +6,10 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import {marginType, inputSize, inputVariant, Settings} from "../../Types/index";
+import {marginType, inputSize, inputVariant, Settings} from "../../types/index";
 import {makeStyles, Theme, createStyles} from "@material-ui/core/styles";
 import TextInput from "../TextInput";
-import {setTheme, setUsername, changeSettings} from "../ChatWindow/chatServerActions";
+import {setUsername, changeSettings, resetSettings} from "../../store/chatServerActions";
 import FormRadioGroup from "../FormRadioGroup";
 import {Dispatch} from "redux";
 
@@ -95,8 +95,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setUsernameAction: (userName: string) => dispatch(setUsername(userName)),
-        changeThemeAction: (theme: string) => dispatch(setTheme(theme)),
-        changeSettingsAction: (settings: Settings) => dispatch(changeSettings(settings))
+        changeSettingsAction: (settings: Settings) => dispatch(changeSettings(settings)),
+        resetSettingsAction: () => dispatch(resetSettings())
     };
 };
 
@@ -105,7 +105,9 @@ interface UserSettingsProps {
     theme: string;
     clock: string;
     sendMessageOnCtrlEnter: string;
+    setUsernameAction: (userName: string) => Dispatch;
     changeSettingsAction: (settings: Settings) => Dispatch;
+    resetSettingsAction: () => Dispatch;
 }
 
 function UserSettings({
@@ -113,21 +115,35 @@ function UserSettings({
     theme,
     clock,
     sendMessageOnCtrlEnter,
-    changeSettingsAction
+    setUsernameAction,
+    changeSettingsAction,
+    resetSettingsAction
 }: UserSettingsProps): React.FunctionComponentElement<UserSettingsProps> {
     const classes = useStyles();
-    const [username, setUserName] = useState(userName);
+    const [username, setUsername] = useState(userName);
     const [themeValue, setThemeValue] = useState(theme);
     const [clockValue, setClockValue] = useState(clock);
     const [sendOnCtrlValue, setSendOnCtrlValue] = useState(sendMessageOnCtrlEnter);
 
     useEffect(() => {
-        setUserName(userName);
+        setUsername(userName);
     }, [userName]);
+
+    useEffect(() => {
+        setThemeValue(theme);
+    }, [theme]);
+
+    useEffect(() => {
+        setClockValue(clock);
+    }, [clock]);
+
+    useEffect(() => {
+        setSendOnCtrlValue(sendMessageOnCtrlEnter);
+    }, [sendMessageOnCtrlEnter]);
 
     const handleChangeUserName = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {value} = e.target;
-        setUserName(value);
+        setUsername(value);
     };
 
     const handleThemeChange = (value) => {
@@ -147,14 +163,33 @@ function UserSettings({
         setSendOnCtrlValue(value);
     };
 
+    const handleResetSettings = () => {
+        if (
+            themeValue !== theme ||
+            clockValue !== clock ||
+            sendOnCtrlValue !== sendMessageOnCtrlEnter ||
+            username !== userName
+        ) {
+            setThemeValue(theme);
+            setClockValue(clock);
+            setSendOnCtrlValue(sendMessageOnCtrlEnter);
+            setUsername(userName);
+        } else {
+            resetSettingsAction();
+        }
+    };
+
     const handleFormSubmit = (e: React.FormEvent<EventTarget>) => {
         e.preventDefault();
         if (userName.trim().length < 3 || userName.trim().length > 50) {
             return;
         }
-        console.log(userName, themeValue, clockValue, sendOnCtrlValue);
+        console.log(username, themeValue, clockValue, sendOnCtrlValue);
+        if (username !== userName) {
+            setUsernameAction(username);
+        }
         changeSettingsAction({
-            userName,
+            userName: username,
             theme: themeValue,
             clock: clockValue,
             sendMessageOnCtrlEnter: sendOnCtrlValue
@@ -176,6 +211,7 @@ function UserSettings({
                                 inputVariant={inputVariant.outlined}
                                 inputValue={username}
                                 onInputChange={handleChangeUserName}
+                                onKeyPress={() => null}
                             />
                         </FormControl>
                         <FormRadioGroup
@@ -200,7 +236,13 @@ function UserSettings({
                             radioValues={["true", "false"]}
                         />
                         <Box className={classes.buttonContainer}>
-                            <Button variant="contained" size="large" color="primary" type="button">
+                            <Button
+                                variant="contained"
+                                size="large"
+                                color="primary"
+                                type="button"
+                                onClick={handleResetSettings}
+                            >
                                 Reset to Defaults
                             </Button>
                             <Button

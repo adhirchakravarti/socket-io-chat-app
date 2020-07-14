@@ -5,9 +5,10 @@ import {
     SET_USERNAME_SUCCESS,
     RECEIVE_MESSAGE,
     SOCKET_ID,
-    CHANGE_SETTINGS
+    CHANGE_SETTINGS,
+    RESET_SETTINGS
 } from "./chatServerConstants";
-import {ChatState, Message} from "../../Types/index";
+import {ChatState, Message} from "../types/index";
 import {ChatServerActionTypes} from "./chatServerActions";
 import {Reducer} from "react";
 
@@ -16,7 +17,7 @@ export const initialState: ChatState = {
     userName: "",
     socketId: "",
     theme: "light",
-    clock: "12",
+    clock: "24",
     sendMessageOnCtrlEnter: "false"
 };
 
@@ -57,6 +58,14 @@ const chatReducer: Reducer<ChatState, ChatServerActionTypes> = produce((draft, a
             draft.theme = theme;
             draft.clock = clock;
             draft.sendMessageOnCtrlEnter = sendMessageOnCtrlEnter;
+            break;
+        }
+
+        case RESET_SETTINGS: {
+            draft.userName = original(draft).userName;
+            draft.theme = "light";
+            draft.clock = "24";
+            draft.sendMessageOnCtrlEnter = "false";
             break;
         }
     }

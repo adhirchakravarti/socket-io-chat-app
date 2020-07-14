@@ -1,11 +1,12 @@
-import {Message, Settings} from "../../Types/index";
+import {Message, Settings} from "../types/index";
 import {
     SEND_MESSAGE,
     SET_USERNAME,
     RECEIVE_MESSAGE,
     GET_INITIAL_USERNAME,
     SET_THEME,
-    CHANGE_SETTINGS
+    CHANGE_SETTINGS,
+    RESET_SETTINGS
 } from "./chatServerConstants";
 
 interface sendMessageAction {
@@ -45,6 +46,10 @@ interface changeSettingsAction {
     payload: {
         settings: Settings;
     };
+}
+
+interface resetSettingsAction {
+    type: typeof RESET_SETTINGS;
 }
 
 export function sendMessage(message: Message): sendMessageAction {
@@ -98,10 +103,17 @@ export function changeSettings(settings: Settings): changeSettingsAction {
     };
 }
 
+export function resetSettings(): resetSettingsAction {
+    return {
+        type: RESET_SETTINGS
+    };
+}
+
 export type ChatServerActionTypes =
     | sendMessageAction
     | receiveMessageAction
     | setUsernameAction
     | getInitialUserNameAction
     | setThemeAction
-    | changeSettingsAction;
+    | changeSettingsAction
+    | resetSettingsAction;

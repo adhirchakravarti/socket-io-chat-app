@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
-import {marginType, inputSize, inputVariant} from "../../Types/index";
+import {marginType, inputSize, inputVariant} from "../../types/index";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -25,6 +25,7 @@ const useStyles = makeStyles(() =>
 interface TextInputProps {
     inputValue: string;
     onInputChange: (string) => void;
+    onKeyPress: (string) => void;
     placeHolder: string;
     marginType: marginType;
     labelText: string;
@@ -35,6 +36,7 @@ interface TextInputProps {
 function TextInput({
     inputValue,
     onInputChange,
+    onKeyPress,
     placeHolder,
     marginType,
     labelText,
@@ -55,6 +57,7 @@ function TextInput({
             size={inputSize}
             className={classes.input}
             onChange={onInputChange}
+            onKeyPress={onKeyPress}
             value={inputValue}
         />
     );

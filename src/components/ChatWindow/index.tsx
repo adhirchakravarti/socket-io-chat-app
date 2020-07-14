@@ -10,8 +10,8 @@ import Box from "@material-ui/core/Box";
 import {withStyles, Theme, StyleRules} from "@material-ui/core/styles";
 import ChatInput from "../ChatInput";
 import ChatMessageList from "../ChatMessageList";
-import {Message} from "../../Types/index";
-import {sendMessage, receiveMessage, getInitialUserName} from "./chatServerActions";
+import {Message} from "../../types/index";
+import {sendMessage, receiveMessage, getInitialUserName} from "../../store/chatServerActions";
 
 const styles = (theme: Theme): StyleRules => ({
     root: {
@@ -67,7 +67,8 @@ interface ChatWindowProps {
     messages: Message[];
     userName: string;
     socketId: string;
-    // setNewUserName: (userName) => Dispatch;
+    clock: string;
+    sendMessageOnCtrlEnter: string;
     getInitialUserName: () => Dispatch;
     sendNewMessage: (message) => Dispatch;
     receiveNewMessage: (message) => Dispatch;
@@ -78,7 +79,9 @@ const mapStateToProps = (state) => {
     return {
         messages: state.chatReducer.messages,
         userName: state.chatReducer.userName,
-        socketId: state.chatReducer.socketId
+        socketId: state.chatReducer.socketId,
+        clock: state.chatReducer.clock,
+        sendMessageOnCtrlEnter: state.chatReducer.sendMessageOnCtrlEnter
     };
 };
 
@@ -118,10 +121,14 @@ class ChatWindow extends React.Component<ChatWindowProps> {
                         <ChatMessageList
                             messages={this.props.messages}
                             socketId={this.props.socketId}
+                            clock={this.props.clock}
                         />
                     </Box>
                     <Box className={classes.input}>
-                        <ChatInput onSubmit={this.handleInputMessage} />
+                        <ChatInput
+                            onSubmit={this.handleInputMessage}
+                            sendMessageOnCtrlEnter={this.props.sendMessageOnCtrlEnter}
+                        />
                     </Box>
                 </Paper>
             </Container>

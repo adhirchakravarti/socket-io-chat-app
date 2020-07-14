@@ -1,6 +1,7 @@
 import React from "react";
+import moment from "moment";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
-import {Message as ChatMessage} from "../../Types/index";
+import {Message as ChatMessage} from "../../types/index";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() =>
@@ -15,15 +16,18 @@ const useStyles = makeStyles(() =>
 
 interface ServerMessageProps {
     message: ChatMessage;
+    clock: string;
 }
 
 function ServerMessage({
-    message
+    message,
+    clock
 }: ServerMessageProps): React.FunctionComponentElement<ServerMessageProps> {
     const classes = useStyles();
+    const timeFormat = clock === "24" ? "MMM D YYYY HH:mm:ss" : "MMM D YYYY h:mm:ss a";
     return (
         <Typography variant="subtitle1" gutterBottom className={classes.root}>
-            {`[Server]: ${message.text}`}
+            {`[Server: ${moment(message.time).format(timeFormat)} ]: ${message.text}`}
         </Typography>
     );
 }

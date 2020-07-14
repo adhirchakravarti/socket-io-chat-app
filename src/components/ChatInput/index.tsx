@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Button from "@material-ui/core/Button";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
 import TextInput from "../TextInput";
-import {marginType, inputSize, inputVariant} from "../../Types/index";
+import {marginType, inputSize, inputVariant} from "../../types/index";
 import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles(() =>
@@ -22,21 +22,29 @@ const useStyles = makeStyles(() =>
 
 interface ChatInputProps {
     onSubmit: (message: string) => void;
+    sendMessageOnCtrlEnter: string;
 }
 
-function ChatInput({onSubmit}: ChatInputProps): JSX.Element {
+function ChatInput({onSubmit, sendMessageOnCtrlEnter}: ChatInputProps): JSX.Element {
     const classes = useStyles();
     const [inputValue, setInputValue] = useState("");
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // console.log(e.target.value);
+        // console.log(e.target);
         const {value} = e.target;
         setInputValue(value);
     };
 
-    const handleSubmit = (e: React.MouseEvent): void => {
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        console.log(e.key, e.ctrlKey, sendMessageOnCtrlEnter);
+        if (e.key === "Enter" && e.ctrlKey && sendMessageOnCtrlEnter === "true") {
+            handleSubmit();
+        }
+    };
+
+    const handleSubmit = (): void => {
         // console.log(e, e.target);
-        e.preventDefault();
+        // e.preventDefault();
         if (inputValue.trim().length > 0) {
             onSubmit(inputValue);
             setInputValue("");
@@ -47,12 +55,17 @@ function ChatInput({onSubmit}: ChatInputProps): JSX.Element {
         <Box className={classes.root}>
             <TextInput
                 labelText="Chat"
-                placeHolder="Enter chat message..."
+                placeHolder={`Enter chat message and ${
+                    sendMessageOnCtrlEnter === "true"
+                        ? "press Ctrl + Enter to send"
+                        : "click the send button"
+                }`}
                 marginType={marginType.dense}
                 inputSize={inputSize.small}
                 inputVariant={inputVariant.outlined}
                 inputValue={inputValue}
                 onInputChange={handleInputChange}
+                onKeyPress={handleKeyPress}
             />
             <Button
                 variant="contained"

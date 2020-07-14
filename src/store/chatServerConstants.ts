@@ -8,4 +8,5 @@ export const RECEIVE_MESSAGE = "chatClient/RECEIVE_MESSAGE";
 export const DISCONNECT = "chatServe/DISCONNECT";
 export const SET_THEME = "chatClient/SET_THEME";
 export const CHANGE_SETTINGS = "chatClient/CHANGE_SETTINGS";
+export const RESET_SETTINGS = "chatClient/RESET_SETTINGS";
 export const SERVER_URL = "http://localhost:3002";
