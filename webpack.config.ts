@@ -21,16 +21,16 @@ const mode = isProduction ? "production" : "development";
 const devtool = isProduction ? "cheap-module-source-map" : "inline-source-map";
 const packageName = process.env.npm_package_name;
 const packageVersion = process.env.npm_package_version;
-console.log(process.env);
+// console.log(process.env);
 
 // const webpackConfig = (env: string): Configuration => ({
 module.exports = {
     entry: "./src/index.tsx",
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
-        alias: {
-            components: path.resolve(__dirname, "./src/components/")
-        }
+        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
+        // alias: {
+        //     components: path.resolve(__dirname, "./src")
+        // }
     },
     output: {
         path: path.join(__dirname, "/dist"),

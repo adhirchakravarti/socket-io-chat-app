@@ -1,10 +1,3 @@
-import {CREATE_CONNECTION, SEND_MESSAGE, RECEIVE_MESSAGE} from "./constants";
-
-// export type Socket = {
-//     connected: boolean;
-//     id: string;
-// };
-
 export enum marginType {
     normal = "normal",
     dense = "dense"
@@ -28,6 +21,8 @@ export interface ChatState {
     userName: string;
     socketId: string;
     theme: string;
+    clock: string;
+    sendMessageOnCtrlEnter: string;
 }
 
 export interface Message {
@@ -38,28 +33,15 @@ export interface Message {
     time: number;
 }
 
-export type user = {
+export interface Settings {
+    userName: string;
+    theme: string;
+    clock: string;
+    sendMessageOnCtrlEnter: string;
+}
+
+export interface User {
     socketId: string;
     name: string;
     joined: number;
-};
-
-interface CreateConnectionAction {
-    type: typeof CREATE_CONNECTION;
 }
-
-interface SendMessageAction {
-    type: typeof SEND_MESSAGE;
-    payload: {
-        message: Message;
-    };
-}
-
-interface ReceiveMessageAction {
-    type: typeof RECEIVE_MESSAGE;
-    payload: {
-        message: Message;
-    };
-}
-
-export type ChatActionTypes = CreateConnectionAction | SendMessageAction | ReceiveMessageAction;

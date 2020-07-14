@@ -3,7 +3,7 @@ import List from "@material-ui/core/List";
 // import ListItem from "@material-ui/core/ListItem";
 // import ListItemText from "@material-ui/core/ListItemText";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
-import {Message} from "../ChatWindow/types";
+import {Message} from "../../Types/index";
 import ChatMessage from "../ChatMessage";
 import ServerMessage from "../ServerMessage";
 

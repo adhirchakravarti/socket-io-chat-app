@@ -1,7 +1,7 @@
 import React from "react";
 import Paper from "@material-ui/core/Paper";
 import {makeStyles, createStyles, Theme} from "@material-ui/core/styles";
-import {Message as ChatMessage} from "../ChatWindow/types";
+import {Message as ChatMessage} from "../../Types/index";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 

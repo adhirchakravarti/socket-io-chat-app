@@ -6,3 +6,6 @@ export const SET_USERNAME_SUCCESS = "chatClient/SET_USERNAME_SUCCESS";
 export const SEND_MESSAGE = "chatServer/SEND_MESSAGE";
 export const RECEIVE_MESSAGE = "chatClient/RECEIVE_MESSAGE";
 export const DISCONNECT = "chatServe/DISCONNECT";
+export const SET_THEME = "chatClient/SET_THEME";
+export const CHANGE_SETTINGS = "chatClient/CHANGE_SETTINGS";
+export const SERVER_URL = "http://localhost:3002";

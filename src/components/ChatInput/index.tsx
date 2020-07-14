@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Button from "@material-ui/core/Button";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
 import TextInput from "../TextInput";
-import {marginType, inputSize, inputVariant} from "../ChatWindow/types";
+import {marginType, inputSize, inputVariant} from "../../Types/index";
 import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles(() =>

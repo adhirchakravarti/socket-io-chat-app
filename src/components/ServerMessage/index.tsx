@@ -1,6 +1,6 @@
 import React from "react";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
-import {Message as ChatMessage} from "../ChatWindow/types";
+import {Message as ChatMessage} from "../../Types/index";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() =>
@@ -22,16 +22,6 @@ function ServerMessage({
 }: ServerMessageProps): React.FunctionComponentElement<ServerMessageProps> {
     const classes = useStyles();
     return (
-        // <Paper elevation={3} className={classes.root} square>
-        //     <Box className={classes.container}>
-        //         <Typography variant="body2" gutterBottom>
-        //             {`[Server]: ${message.text}`}
-        //         </Typography>
-        //         <Typography variant="caption" gutterBottom>
-        //             {message.sender}
-        //         </Typography>
-        //     </Box>
-        // </Paper>
         <Typography variant="subtitle1" gutterBottom className={classes.root}>
             {`[Server]: ${message.text}`}
         </Typography>

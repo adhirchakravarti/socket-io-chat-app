@@ -1,5 +1,6 @@
 import React from "react";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import {connect} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -18,9 +19,20 @@ const tabs = [
     {label: "Settings", link: "settings"}
 ];
 
-function App(): JSX.Element {
+const mapStateToProps = (state) => {
+    console.log("State at App = ", state);
+    return {
+        theme: state.chatReducer.theme
+    };
+};
+
+interface AppProps {
+    theme: string;
+}
+
+function App({theme}: AppProps): React.FunctionComponentElement<AppProps> {
     return (
-        <ThemeProvider theme={lightTheme}>
+        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
             <Router>
                 <CssBaseline />
                 <GlobalResponsiveFont />
@@ -54,4 +66,4 @@ function App(): JSX.Element {
     );
 }
 
-export default App;
+export default connect(mapStateToProps, null)(App);

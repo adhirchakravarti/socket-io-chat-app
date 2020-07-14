@@ -1,9 +1,11 @@
-import {Message} from "./types";
+import {Message, Settings} from "../../Types/index";
 import {
     SEND_MESSAGE,
     SET_USERNAME,
     RECEIVE_MESSAGE,
-    GET_INITIAL_USERNAME
+    GET_INITIAL_USERNAME,
+    SET_THEME,
+    CHANGE_SETTINGS
 } from "./chatServerConstants";
 
 interface sendMessageAction {
@@ -29,6 +31,20 @@ interface setUsernameAction {
 
 interface getInitialUserNameAction {
     type: typeof GET_INITIAL_USERNAME;
+}
+
+interface setThemeAction {
+    type: typeof SET_THEME;
+    payload: {
+        theme: string;
+    };
+}
+
+interface changeSettingsAction {
+    type: typeof CHANGE_SETTINGS;
+    payload: {
+        settings: Settings;
+    };
 }
 
 export function sendMessage(message: Message): sendMessageAction {
@@ -63,3 +79,29 @@ export function getInitialUserName(): getInitialUserNameAction {
         type: GET_INITIAL_USERNAME
     };
 }
+
+export function setTheme(theme: string): setThemeAction {
+    return {
+        type: SET_THEME,
+        payload: {
+            theme
+        }
+    };
+}
+
+export function changeSettings(settings: Settings): changeSettingsAction {
+    return {
+        type: CHANGE_SETTINGS,
+        payload: {
+            settings
+        }
+    };
+}
+
+export type ChatServerActionTypes =
+    | sendMessageAction
+    | receiveMessageAction
+    | setUsernameAction
+    | getInitialUserNameAction
+    | setThemeAction
+    | changeSettingsAction;

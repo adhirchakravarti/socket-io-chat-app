@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useState, useEffect} from "react";
-import {connect, ConnectedProps} from "react-redux";
+import {connect} from "react-redux";
 import {compose, Dispatch} from "redux";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -10,7 +10,7 @@ import Box from "@material-ui/core/Box";
 import {withStyles, Theme, StyleRules} from "@material-ui/core/styles";
 import ChatInput from "../ChatInput";
 import ChatMessageList from "../ChatMessageList";
-import {Message} from "./types";
+import {Message} from "../../Types/index";
 import {sendMessage, receiveMessage, getInitialUserName} from "./chatServerActions";
 
 const styles = (theme: Theme): StyleRules => ({
@@ -105,9 +105,6 @@ class ChatWindow extends React.Component<ChatWindowProps> {
             socketId: this.props.socketId,
             time: new Date().getTime()
         };
-        // this.state.socket.emit("chat message", newMessage, (response) => {
-        //     console.log("server response to sent message = ", response);
-        // });
         const {sendNewMessage} = this.props;
         sendNewMessage(newMessage);
     };

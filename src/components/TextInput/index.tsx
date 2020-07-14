@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
-import {marginType, inputSize, inputVariant} from "../ChatWindow/types";
+import {marginType, inputSize, inputVariant} from "../../Types/index";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -45,7 +45,7 @@ function TextInput({
 
     return (
         <TextField
-            label={labelText}
+            label={labelText || ""}
             placeholder={placeHolder}
             margin={marginType}
             InputLabelProps={{

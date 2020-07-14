@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
-import {useRouteMatch} from "react-router-dom";
+import {useRouteMatch, useLocation} from "react-router-dom";
 import Tabs from "@material-ui/core/Tabs";
 import Paper from "@material-ui/core/Paper";
 import LinkTab from "../LinkTab";
@@ -15,13 +15,15 @@ interface TabPanelProps {
 }
 
 function TabPanel({tabs}: TabPanelProps): JSX.Element {
-    const {url} = useRouteMatch();
+    const {path, url} = useRouteMatch();
+    const location = useLocation();
     const [tabValue, setTabValue] = useState(() => {
-        if (url.includes("/settings")) {
+        if (location.pathname.includes("/settings")) {
             return 1;
         }
         return 0;
     });
+    console.log("TabValue = ", tabValue, url, path, location);
 
     const handleTabChange = (e: React.MouseEvent<HTMLButtonElement>, newVal: number) => {
         setTabValue(newVal);
