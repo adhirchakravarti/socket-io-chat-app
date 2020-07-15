@@ -18,7 +18,7 @@ const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const isProduction =
     typeof process.env.NODE_ENV !== "undefined" && process.env.NODE_ENV === "production";
 const mode = isProduction ? "production" : "development";
-const devtool = isProduction ? "cheap-module-source-map" : "inline-source-map";
+const devtool = isProduction ? "" : "cheap-module-source-map";
 const packageName = process.env.npm_package_name;
 const packageVersion = process.env.npm_package_version;
 // console.log(process.env);
@@ -94,6 +94,7 @@ module.exports = {
             }
         }),
         new CleanWebpackPlugin(),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new BundleAnalyzerPlugin(),
         new CompressionWebpackPlugin({
             filename: "[path].br[query]",

@@ -14,6 +14,18 @@ class UserService {
         return this.users;
     }
 
+    getUser(socketId: string) {
+        return new Promise((resolve, reject) => {
+            const users = [...this.getUsers()];
+            const userIndex = users.findIndex((user) => user.socketId === socketId);
+            if (userIndex >= 0) {
+                resolve(users[userIndex]);
+            } else {
+                reject();
+            }
+        });
+    }
+
     addNewUser(socket: SocketIO.Socket) {
         const createdUser = this.generateUserName();
         const userIndex = this.users.findIndex((user) => user.name === createdUser);
@@ -45,14 +57,16 @@ class UserService {
         });
     }
 
-    removeUser(socketId) {
-        const userIndex = this.users.findIndex((user) => user.socketId === socketId);
-        if (userIndex >= 0) {
-            const userName = this.users[userIndex].name;
-            this.users.splice(userIndex, 1);
-            return `User with name ${userName} has left the chat`;
-        }
-        return `User with socketId ${socketId} not found`;
+    removeUser(socketId: string) {
+        return new Promise((resolve, reject) => {
+            const userIndex = this.users.findIndex((user) => user.socketId === socketId);
+            if (userIndex >= 0) {
+                const userName = this.users[userIndex].name;
+                this.users.splice(userIndex, 1);
+                resolve(`User with name ${userName} has left the chat`);
+            }
+            reject("User not found");
+        });
     }
 }
 

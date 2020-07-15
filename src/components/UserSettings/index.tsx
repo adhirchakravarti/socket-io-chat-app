@@ -11,7 +11,7 @@ import {makeStyles, Theme, createStyles} from "@material-ui/core/styles";
 import TextInput from "../TextInput";
 import {
     setUsername,
-    changeSettings,
+    saveSettings,
     resetSettings,
     unreadMessage
 } from "../../store/chatServerActions";
@@ -83,7 +83,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setUsernameAction: (userName: string) => dispatch(setUsername(userName)),
-        changeSettingsAction: (settings: Settings) => dispatch(changeSettings(settings)),
+        saveSettingsAction: (settings: Settings) => dispatch(saveSettings(settings)),
         resetSettingsAction: () => dispatch(resetSettings()),
         unreadMessageAction: () => dispatch(unreadMessage())
     };
@@ -96,7 +96,7 @@ interface UserSettingsProps {
     sendMessageOnCtrlEnter: string;
     messages: Message[];
     setUsernameAction: (userName: string) => Dispatch;
-    changeSettingsAction: (settings: Settings) => Dispatch;
+    saveSettingsAction: (settings: Settings) => Dispatch;
     resetSettingsAction: () => Dispatch;
     unreadMessageAction: () => Dispatch;
 }
@@ -108,7 +108,7 @@ function UserSettings({
     sendMessageOnCtrlEnter,
     messages,
     setUsernameAction,
-    changeSettingsAction,
+    saveSettingsAction,
     resetSettingsAction,
     unreadMessageAction
 }: UserSettingsProps): React.FunctionComponentElement<UserSettingsProps> {
@@ -184,7 +184,7 @@ function UserSettings({
         if (username !== userName) {
             setUsernameAction(username);
         }
-        changeSettingsAction({
+        saveSettingsAction({
             userName: username,
             theme: themeValue,
             clock: clockValue,

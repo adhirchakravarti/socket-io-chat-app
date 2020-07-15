@@ -1,6 +1,7 @@
 {
-    "name": "docler-app",
+    "name": "chat-app",
     "version": "1.0.0",
+    "author": "Adhir Chakravarti",
     "main": "index.js",
     "license": "MIT",
     "devDependencies": {

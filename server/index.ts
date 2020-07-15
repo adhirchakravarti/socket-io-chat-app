@@ -26,12 +26,15 @@ const createMessage = (text: string) => {
 
 io.on("connection", function (socket) {
     console.log("connection!!", socket.id, socket.handshake.time);
-    const user = userServ.addNewUser(socket);
-    console.log(user, userServ.getUsers());
+    const createdUserName = userServ.addNewUser(socket);
+    console.log(createdUserName, userServ.getUsers());
     // socket.emit("welcome", user);
-    socket.emit("action", {type: "chatClient/SET_USERNAME_SUCCESS", payload: {userName: user}});
     socket.emit("action", {type: "chatClient/SOCKET_ID", payload: {socketId: socket.id}});
-    const joinNotificationMessage = createMessage(`${user} has joined the chat!`);
+    socket.emit("action", {
+        type: "chatClient/SET_USERNAME_SUCCESS",
+        payload: {userName: createdUserName}
+    });
+    const joinNotificationMessage = createMessage(`${createdUserName} has joined the chat!`);
     // socket.broadcast.emit("broadcast", joinNotificationMessage);
     io.emit("action", {
         type: "chatClient/RECEIVE_MESSAGE",
@@ -48,10 +51,22 @@ io.on("connection", function (socket) {
     socket.on("disconnect", (reason) => {
         console.log("reason for disconnect = ", reason);
         if (disconnectReasons.client.includes(reason)) {
-            const response = userServ.removeUser(socket.id);
-            console.log(response);
-            const msg = createMessage(response);
-            socket.broadcast.emit("broadcast", msg);
+            userServ
+                .removeUser(socket.id)
+                .then((removeMessage) => {
+                    const removeNotification = createMessage(`${removeMessage} due to ${reason}`);
+                    io.emit("action", {
+                        type: "chatClient/RECEIVE_MESSAGE",
+                        payload: {message: removeNotification}
+                    });
+                })
+                .catch((notFoundMessage) => {
+                    const removeNotification = createMessage(notFoundMessage);
+                    io.emit("action", {
+                        type: "chatClient/RECEIVE_MESSAGE",
+                        payload: {message: removeNotification}
+                    });
+                });
         } else if (disconnectReasons.server.includes(reason)) {
             // manually reconnect
         }
@@ -63,7 +78,7 @@ io.on("connection", function (socket) {
             socket.emit("action", {type: "message", data: "good day!"});
         } else if (action.type === "chatServer/SET_USERNAME") {
             const {userName} = action.payload;
-            console.log(userName, user, socket.id, userServ.getUsers());
+            console.log(userName, createdUserName, socket.id, userServ.getUsers());
             userServ
                 .changeUserName(socket.id, userName)
                 .then((response) => {
@@ -73,7 +88,7 @@ io.on("connection", function (socket) {
                             payload: {userName: userName}
                         });
                         const nameChangeNotification = createMessage(
-                            `${user} is now called ${userName}`
+                            `${createdUserName} is now called ${userName}`
                         );
                         io.emit("action", {
                             type: "chatClient/RECEIVE_MESSAGE",

@@ -5,10 +5,11 @@ import {
     SET_USERNAME_SUCCESS,
     RECEIVE_MESSAGE,
     SOCKET_ID,
-    CHANGE_SETTINGS,
+    SAVE_SETTINGS,
     RESET_SETTINGS,
     UNREAD_MESSAGE,
-    RESET_UNREAD_MESSAGE_COUNT
+    RESET_UNREAD_MESSAGE_COUNT,
+    LOAD_SETTINGS
 } from "./chatServerConstants";
 import {ChatState, Message} from "../types/index";
 import {ChatServerActionTypes} from "./chatServerActions";
@@ -51,10 +52,13 @@ const chatReducer: Reducer<ChatState, ChatServerActionTypes> = produce((draft, a
             break;
         }
 
-        case CHANGE_SETTINGS: {
+        case SAVE_SETTINGS: {
             const {
-                settings: {userName, theme, clock, sendMessageOnCtrlEnter}
+                settings: {userName, theme, clock, sendMessageOnCtrlEnter},
+                settings
             } = action.payload;
+            sessionStorage.setItem("settings", JSON.stringify(settings));
+            console.log(sessionStorage);
             draft.userName = userName;
             draft.theme = theme;
             draft.clock = clock;
@@ -67,6 +71,18 @@ const chatReducer: Reducer<ChatState, ChatServerActionTypes> = produce((draft, a
             draft.theme = "light";
             draft.clock = "24";
             draft.sendMessageOnCtrlEnter = "false";
+            break;
+        }
+
+        case LOAD_SETTINGS: {
+            console.log(sessionStorage.getItem("settings"));
+            const settings = JSON.parse(sessionStorage.getItem("settings"));
+            console.log(settings);
+            const {userName, theme, clock, sendMessageOnCtrlEnter} = settings;
+            draft.userName = userName;
+            draft.theme = theme;
+            draft.clock = clock;
+            draft.sendMessageOnCtrlEnter = sendMessageOnCtrlEnter;
             break;
         }
 

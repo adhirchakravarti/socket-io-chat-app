@@ -5,10 +5,11 @@ import {
     RECEIVE_MESSAGE,
     GET_INITIAL_USERNAME,
     SET_THEME,
-    CHANGE_SETTINGS,
+    SAVE_SETTINGS,
     RESET_SETTINGS,
     UNREAD_MESSAGE,
-    RESET_UNREAD_MESSAGE_COUNT
+    RESET_UNREAD_MESSAGE_COUNT,
+    LOAD_SETTINGS
 } from "./chatServerConstants";
 
 interface SendMessageAction {
@@ -43,8 +44,8 @@ interface SetThemeAction {
     };
 }
 
-interface ChangeSettingsAction {
-    type: typeof CHANGE_SETTINGS;
+interface SaveSettingsAction {
+    type: typeof SAVE_SETTINGS;
     payload: {
         settings: Settings;
     };
@@ -52,6 +53,10 @@ interface ChangeSettingsAction {
 
 interface ResetSettingsAction {
     type: typeof RESET_SETTINGS;
+}
+
+interface LoadSettingsAction {
+    type: typeof LOAD_SETTINGS;
 }
 
 interface UnreadMessageAction {
@@ -104,9 +109,9 @@ export function setTheme(theme: string): SetThemeAction {
     };
 }
 
-export function changeSettings(settings: Settings): ChangeSettingsAction {
+export function saveSettings(settings: Settings): SaveSettingsAction {
     return {
-        type: CHANGE_SETTINGS,
+        type: SAVE_SETTINGS,
         payload: {
             settings
         }
@@ -116,6 +121,12 @@ export function changeSettings(settings: Settings): ChangeSettingsAction {
 export function resetSettings(): ResetSettingsAction {
     return {
         type: RESET_SETTINGS
+    };
+}
+
+export function loadSettings(): LoadSettingsAction {
+    return {
+        type: LOAD_SETTINGS
     };
 }
 
@@ -137,7 +148,8 @@ export type ChatServerActionTypes =
     | SetUsernameAction
     | GetInitialUserNameAction
     | SetThemeAction
-    | ChangeSettingsAction
+    | SaveSettingsAction
     | ResetSettingsAction
+    | LoadSettingsAction
     | UnreadMessageAction
     | ResetUnreadMessageCountAction;

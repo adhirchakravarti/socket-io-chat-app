@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from "react";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
+
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import MailIcon from "@material-ui/icons/Mail";
 import SettingsIcon from "@material-ui/icons/Settings";
-import GlobalResponsiveFont from "../../globalResponsiveFont";
+
 import {ThemeProvider} from "@material-ui/core/styles";
+import GlobalResponsiveFont from "../../globalResponsiveFont";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Header from "../Header";
 import UserSettings from "../UserSettings";
@@ -67,9 +69,9 @@ function App({theme, unreadMessageCount}: AppProps): React.FunctionComponentElem
     ];
     return (
         <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+            <CssBaseline />
+            <GlobalResponsiveFont />
             <Router>
-                <CssBaseline />
-                <GlobalResponsiveFont />
                 <Switch>
                     <Container maxWidth="xl">
                         <Grid
@@ -82,7 +84,7 @@ function App({theme, unreadMessageCount}: AppProps): React.FunctionComponentElem
                             spacing={2}
                         >
                             <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-                                <Header title="Docler Chat App" />
+                                <Header title="Chat-App" />
                                 <TabPanel tabs={tabs} />
                             </Grid>
                             <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
