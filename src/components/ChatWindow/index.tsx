@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {useState, useEffect} from "react";
+import React from "react";
 import {connect} from "react-redux";
 import {compose, Dispatch} from "redux";
 import Container from "@material-ui/core/Container";
@@ -11,16 +11,19 @@ import {withStyles, Theme, StyleRules} from "@material-ui/core/styles";
 import ChatInput from "../ChatInput";
 import ChatMessageList from "../ChatMessageList";
 import {Message} from "../../types/index";
-import {sendMessage, receiveMessage, getInitialUserName} from "../../store/chatServerActions";
+import {
+    sendMessage,
+    receiveMessage,
+    getInitialUserName,
+    resetUnreadMessageCount
+} from "../../store/chatServerActions";
 
 const styles = (theme: Theme): StyleRules => ({
     root: {
         width: "100%",
-        height: "82vh",
         display: "flex",
         flexDirection: "column",
         flexWrap: "nowrap",
-        // maxWidth: 300,
         backgroundColor: theme.palette.background.paper
     },
     chatContainer: {
@@ -30,29 +33,26 @@ const styles = (theme: Theme): StyleRules => ({
     },
     listContainer: {
         display: "flex",
-        height: "72vh",
+        height: "67vh",
+        [theme.breakpoints.down("md")]: {
+            height: "70vh"
+        },
         [theme.breakpoints.down("xs")]: {
-            height: "75vh"
+            height: "72vh"
         }
-    },
-    list: {
-        width: "100%",
-        overflowY: "auto"
     },
     input: {
         display: "flex",
         flexDirection: "row",
-        // margin: "2rem",
         justifyContent: "center",
         alignItems: "stretch"
     }
 });
 
-type Classes = {
+type ChatWindowClasses = {
     root: string;
     chatContainer: string;
     listContainer: string;
-    list: string;
     input: string;
 };
 
@@ -63,7 +63,7 @@ type ComponentState = {
 };
 
 interface ChatWindowProps {
-    classes: Classes;
+    classes: ChatWindowClasses;
     messages: Message[];
     userName: string;
     socketId: string;
@@ -72,6 +72,7 @@ interface ChatWindowProps {
     getInitialUserName: () => Dispatch;
     sendNewMessage: (message) => Dispatch;
     receiveNewMessage: (message) => Dispatch;
+    resetUnreadMessageCountAction: () => Dispatch;
 }
 
 const mapStateToProps = (state) => {
@@ -87,10 +88,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // setNewUserName: (userName) => dispatch(setUserName(userName)),
         getInitialUserName: () => dispatch(getInitialUserName()),
         sendNewMessage: (message: Message) => dispatch(sendMessage(message)),
-        receiveNewMessage: (message: Message) => dispatch(receiveMessage(message))
+        receiveNewMessage: (message: Message) => dispatch(receiveMessage(message)),
+        resetUnreadMessageCountAction: () => dispatch(resetUnreadMessageCount())
     };
 };
 
@@ -99,6 +100,10 @@ class ChatWindow extends React.Component<ChatWindowProps> {
         messages: [],
         userName: ""
     };
+
+    componentDidMount() {
+        this.props.resetUnreadMessageCountAction();
+    }
 
     handleInputMessage = (message: string): void => {
         const newMessage = {
@@ -113,7 +118,6 @@ class ChatWindow extends React.Component<ChatWindowProps> {
     };
     render() {
         const {classes} = this.props;
-        console.log("props at ChatWindow = ", this.props);
         return (
             <Container maxWidth="xl" className={classes.root} disableGutters>
                 <Paper className={classes.chatContainer} elevation={3}>

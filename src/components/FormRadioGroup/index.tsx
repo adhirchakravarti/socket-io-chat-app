@@ -36,7 +36,6 @@ function FormRadioGroup({
     radioLabels,
     radioValues
 }: FormRadioGroupProps): React.FunctionComponentElement<FormRadioGroupProps> {
-    console.log("Props at FormRadioGroup = ", value);
     const classes = useStyles();
     const handleValueChange = (e: React.ChangeEvent<HTMLFormElement | HTMLInputElement>) => {
         const {value} = e.target;

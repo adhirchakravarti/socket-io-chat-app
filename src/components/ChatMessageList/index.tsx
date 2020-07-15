@@ -1,7 +1,5 @@
 import React, {useEffect} from "react";
 import List from "@material-ui/core/List";
-// import ListItem from "@material-ui/core/ListItem";
-// import ListItemText from "@material-ui/core/ListItemText";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
 import {Message} from "../../types/index";
 import ChatMessage from "../ChatMessage";

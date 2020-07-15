@@ -6,10 +6,15 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import {marginType, inputSize, inputVariant, Settings} from "../../types/index";
+import {marginType, inputSize, inputVariant, Settings, Message} from "../../types/index";
 import {makeStyles, Theme, createStyles} from "@material-ui/core/styles";
 import TextInput from "../TextInput";
-import {setUsername, changeSettings, resetSettings} from "../../store/chatServerActions";
+import {
+    setUsername,
+    changeSettings,
+    resetSettings,
+    unreadMessage
+} from "../../store/chatServerActions";
 import FormRadioGroup from "../FormRadioGroup";
 import {Dispatch} from "redux";
 
@@ -17,14 +22,12 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: "100%",
-            height: "82vh",
             display: "flex",
             flexDirection: "column",
             flexWrap: "nowrap",
-            // maxWidth: 300,
             backgroundColor: theme.palette.background.paper
         },
-        chatContainer: {
+        contentContainer: {
             display: "flex",
             flexDirection: "column",
             flexGrow: 1
@@ -34,18 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: "column",
             alignItems: "center",
             flexGrow: 1,
-            padding: "4rem",
-            height: "72vh",
-            [theme.breakpoints.down("xs")]: {
-                height: "75vh"
-            }
-        },
-        input: {
-            display: "flex",
-            flexDirection: "row",
-            // margin: "2rem",
-            justifyContent: "center",
-            alignItems: "stretch"
+            padding: "2rem"
         },
         form: {
             display: "flex",
@@ -56,11 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(3),
             display: "flex",
             flexGrow: 1
-        },
-        radioGroup: {
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap"
         },
         buttonContainer: {
             display: "flex",
@@ -88,7 +75,8 @@ const mapStateToProps = (state) => {
         userName: state.chatReducer.userName,
         theme: state.chatReducer.theme,
         clock: state.chatReducer.clock,
-        sendMessageOnCtrlEnter: state.chatReducer.sendMessageOnCtrlEnter
+        sendMessageOnCtrlEnter: state.chatReducer.sendMessageOnCtrlEnter,
+        messages: state.chatReducer.messages
     };
 };
 
@@ -96,7 +84,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setUsernameAction: (userName: string) => dispatch(setUsername(userName)),
         changeSettingsAction: (settings: Settings) => dispatch(changeSettings(settings)),
-        resetSettingsAction: () => dispatch(resetSettings())
+        resetSettingsAction: () => dispatch(resetSettings()),
+        unreadMessageAction: () => dispatch(unreadMessage())
     };
 };
 
@@ -105,9 +94,11 @@ interface UserSettingsProps {
     theme: string;
     clock: string;
     sendMessageOnCtrlEnter: string;
+    messages: Message[];
     setUsernameAction: (userName: string) => Dispatch;
     changeSettingsAction: (settings: Settings) => Dispatch;
     resetSettingsAction: () => Dispatch;
+    unreadMessageAction: () => Dispatch;
 }
 
 function UserSettings({
@@ -115,15 +106,18 @@ function UserSettings({
     theme,
     clock,
     sendMessageOnCtrlEnter,
+    messages,
     setUsernameAction,
     changeSettingsAction,
-    resetSettingsAction
+    resetSettingsAction,
+    unreadMessageAction
 }: UserSettingsProps): React.FunctionComponentElement<UserSettingsProps> {
     const classes = useStyles();
     const [username, setUsername] = useState(userName);
     const [themeValue, setThemeValue] = useState(theme);
     const [clockValue, setClockValue] = useState(clock);
     const [sendOnCtrlValue, setSendOnCtrlValue] = useState(sendMessageOnCtrlEnter);
+    const [messageCount, setMessageCount] = useState(messages.length);
 
     useEffect(() => {
         setUsername(userName);
@@ -141,25 +135,28 @@ function UserSettings({
         setSendOnCtrlValue(sendMessageOnCtrlEnter);
     }, [sendMessageOnCtrlEnter]);
 
+    useEffect(() => {
+        const numMessages = messages.length;
+        if (numMessages > messageCount) {
+            setMessageCount(numMessages);
+            unreadMessageAction();
+        }
+    }, [messages]);
+
     const handleChangeUserName = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {value} = e.target;
         setUsername(value);
     };
 
     const handleThemeChange = (value) => {
-        // const {value} = e.target;
-        console.log("theme value = ", value);
         setThemeValue(value);
     };
 
     const handleClockDisplayChange = (value) => {
-        // const {value} = e.target;
-        console.log("clock value = ", value);
         setClockValue(value);
     };
 
     const handleMessageSend = (value) => {
-        console.log("message value = ", value);
         setSendOnCtrlValue(value);
     };
 
@@ -184,7 +181,6 @@ function UserSettings({
         if (userName.trim().length < 3 || userName.trim().length > 50) {
             return;
         }
-        console.log(username, themeValue, clockValue, sendOnCtrlValue);
         if (username !== userName) {
             setUsernameAction(username);
         }
@@ -198,7 +194,7 @@ function UserSettings({
 
     return (
         <Container maxWidth="xl" className={classes.root} disableGutters>
-            <Paper className={classes.chatContainer} elevation={3}>
+            <Paper className={classes.contentContainer} elevation={3}>
                 <Box component="div" className={classes.listContainer}>
                     <form className={classes.form} onSubmit={handleFormSubmit}>
                         <FormControl error={false} className={classes.formControl}>

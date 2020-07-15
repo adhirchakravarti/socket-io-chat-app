@@ -6,53 +6,63 @@ import {
     GET_INITIAL_USERNAME,
     SET_THEME,
     CHANGE_SETTINGS,
-    RESET_SETTINGS
+    RESET_SETTINGS,
+    UNREAD_MESSAGE,
+    RESET_UNREAD_MESSAGE_COUNT
 } from "./chatServerConstants";
 
-interface sendMessageAction {
+interface SendMessageAction {
     type: typeof SEND_MESSAGE;
     payload: {
         message: Message;
     };
 }
 
-interface receiveMessageAction {
+interface ReceiveMessageAction {
     type: typeof RECEIVE_MESSAGE;
     payload: {
         message: Message;
     };
 }
 
-interface setUsernameAction {
+interface SetUsernameAction {
     type: typeof SET_USERNAME;
     payload: {
         userName: string;
     };
 }
 
-interface getInitialUserNameAction {
+interface GetInitialUserNameAction {
     type: typeof GET_INITIAL_USERNAME;
 }
 
-interface setThemeAction {
+interface SetThemeAction {
     type: typeof SET_THEME;
     payload: {
         theme: string;
     };
 }
 
-interface changeSettingsAction {
+interface ChangeSettingsAction {
     type: typeof CHANGE_SETTINGS;
     payload: {
         settings: Settings;
     };
 }
 
-interface resetSettingsAction {
+interface ResetSettingsAction {
     type: typeof RESET_SETTINGS;
 }
 
-export function sendMessage(message: Message): sendMessageAction {
+interface UnreadMessageAction {
+    type: typeof UNREAD_MESSAGE;
+}
+
+interface ResetUnreadMessageCountAction {
+    type: typeof RESET_UNREAD_MESSAGE_COUNT;
+}
+
+export function sendMessage(message: Message): SendMessageAction {
     return {
         type: SEND_MESSAGE,
         payload: {
@@ -61,7 +71,7 @@ export function sendMessage(message: Message): sendMessageAction {
     };
 }
 
-export function receiveMessage(message: Message): receiveMessageAction {
+export function receiveMessage(message: Message): ReceiveMessageAction {
     return {
         type: RECEIVE_MESSAGE,
         payload: {
@@ -70,7 +80,7 @@ export function receiveMessage(message: Message): receiveMessageAction {
     };
 }
 
-export function setUsername(userName: string): setUsernameAction {
+export function setUsername(userName: string): SetUsernameAction {
     return {
         type: SET_USERNAME,
         payload: {
@@ -79,13 +89,13 @@ export function setUsername(userName: string): setUsernameAction {
     };
 }
 
-export function getInitialUserName(): getInitialUserNameAction {
+export function getInitialUserName(): GetInitialUserNameAction {
     return {
         type: GET_INITIAL_USERNAME
     };
 }
 
-export function setTheme(theme: string): setThemeAction {
+export function setTheme(theme: string): SetThemeAction {
     return {
         type: SET_THEME,
         payload: {
@@ -94,7 +104,7 @@ export function setTheme(theme: string): setThemeAction {
     };
 }
 
-export function changeSettings(settings: Settings): changeSettingsAction {
+export function changeSettings(settings: Settings): ChangeSettingsAction {
     return {
         type: CHANGE_SETTINGS,
         payload: {
@@ -103,17 +113,31 @@ export function changeSettings(settings: Settings): changeSettingsAction {
     };
 }
 
-export function resetSettings(): resetSettingsAction {
+export function resetSettings(): ResetSettingsAction {
     return {
         type: RESET_SETTINGS
     };
 }
 
+export function unreadMessage(): UnreadMessageAction {
+    return {
+        type: UNREAD_MESSAGE
+    };
+}
+
+export function resetUnreadMessageCount(): ResetUnreadMessageCountAction {
+    return {
+        type: RESET_UNREAD_MESSAGE_COUNT
+    };
+}
+
 export type ChatServerActionTypes =
-    | sendMessageAction
-    | receiveMessageAction
-    | setUsernameAction
-    | getInitialUserNameAction
-    | setThemeAction
-    | changeSettingsAction
-    | resetSettingsAction;
+    | SendMessageAction
+    | ReceiveMessageAction
+    | SetUsernameAction
+    | GetInitialUserNameAction
+    | SetThemeAction
+    | ChangeSettingsAction
+    | ResetSettingsAction
+    | UnreadMessageAction
+    | ResetUnreadMessageCountAction;

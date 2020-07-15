@@ -8,7 +8,7 @@ const useStyles = makeStyles(() =>
     createStyles({
         root: {
             width: "fit-content",
-            margin: "0rem 0rem 1rem 0rem",
+            margin: "0rem 1rem 1rem 1rem",
             alignSelf: "center"
         }
     })

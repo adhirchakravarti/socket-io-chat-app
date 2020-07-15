@@ -30,21 +30,17 @@ function ChatInput({onSubmit, sendMessageOnCtrlEnter}: ChatInputProps): JSX.Elem
     const [inputValue, setInputValue] = useState("");
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // console.log(e.target);
         const {value} = e.target;
         setInputValue(value);
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        console.log(e.key, e.ctrlKey, sendMessageOnCtrlEnter);
         if (e.key === "Enter" && e.ctrlKey && sendMessageOnCtrlEnter === "true") {
             handleSubmit();
         }
     };
 
     const handleSubmit = (): void => {
-        // console.log(e, e.target);
-        // e.preventDefault();
         if (inputValue.trim().length > 0) {
             onSubmit(inputValue);
             setInputValue("");

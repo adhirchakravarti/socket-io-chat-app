@@ -8,16 +8,6 @@ import io from "socket.io-client";
 const socket = io(SERVER_URL);
 const socketIoMiddleware = createSocketIoMiddleware(socket, "chatServer/");
 const middleWares = [socketIoMiddleware];
-// import {initialState} from "./reducer";
-
-// function reducer(state = {}, action) {
-//     switch (action.type) {
-//         case "message":
-//             return Object.assign({}, {message: action.data});
-//         default:
-//             return state;
-//     }
-// }
 
 const rootReducer = combineReducers({
     chatReducer
@@ -25,14 +15,5 @@ const rootReducer = combineReducers({
 const enhancer = composeWithDevTools(applyMiddleware(...middleWares));
 
 const store = createStore(rootReducer, enhancer);
-
-store.subscribe(() => {
-    console.log("new client state", store.getState());
-});
-// store.dispatch({type: "chatServer/hello", data: "Hello!"});
-// store.dispatch({type: "chatClient/SOCKET_ID", payload: {socketId: socket.id}});
-// setTimeout(() => {
-//     store.dispatch({type: "chatServer/SET_USERNAME", payload: {userName: "Jack"}});
-// }, 20000);
 
 export default store;

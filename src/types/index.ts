@@ -23,6 +23,7 @@ export interface ChatState {
     theme: string;
     clock: string;
     sendMessageOnCtrlEnter: string;
+    unreadMessageCount: number;
 }
 
 export interface Message {
