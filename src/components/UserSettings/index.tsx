@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {connect} from "react-redux";
-import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -17,6 +16,7 @@ import {
 } from "../../store/chatServerActions";
 import FormRadioGroup from "../FormRadioGroup";
 import {Dispatch} from "redux";
+import {useMediaQuery} from "react-responsive";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -34,27 +34,99 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         listContainer: {
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            flexGrow: 1,
-            padding: "2rem"
+            justifyContent: "center",
+            maxHeight: (props: {
+                parentHeight: number;
+                isPortrait: boolean;
+                isTabletOrMobileDevice: boolean;
+            }) => {
+                const {parentHeight, isPortrait, isTabletOrMobileDevice} = props;
+                if (isTabletOrMobileDevice) {
+                    if (parentHeight && isPortrait) {
+                        return parentHeight * 0.65;
+                    } else if (parentHeight && !isPortrait) {
+                        return parentHeight * 0.53;
+                    }
+                }
+                if (parentHeight && isPortrait) {
+                    return parentHeight * 0.75;
+                } else if (parentHeight && !isPortrait) {
+                    return parentHeight * 0.65;
+                }
+            }
         },
-        form: {
-            display: "flex",
-            flexDirection: "column",
-            flexGrow: 1
+        form: (props: {
+            parentHeight: number;
+            isPortrait: boolean;
+            isTabletOrMobileDevice: boolean;
+        }) => {
+            const {isPortrait, isTabletOrMobileDevice} = props;
+            if (isTabletOrMobileDevice && !isPortrait) {
+                return {
+                    display: "flex",
+                    flexDirection: "column",
+                    flexGrow: 1,
+                    justifyContent: "center"
+                };
+            }
+            return {
+                display: "flex",
+                flexDirection: "column",
+                flexGrow: 0,
+                justifyContent: "flex-start"
+            };
         },
         formControl: {
-            margin: theme.spacing(3),
-            display: "flex",
-            flexGrow: 1
+            padding: (props: {
+                parentHeight: number;
+                isPortrait: boolean;
+                isTabletOrMobileDevice: boolean;
+            }) =>
+                props.isTabletOrMobileDevice
+                    ? props.isPortrait
+                        ? "2rem 1rem 1rem 1rem"
+                        : "1rem"
+                    : "2rem 1rem",
+            display: "flex"
+        },
+        radioGroupContainer: (props: {
+            parentHeight: number;
+            isPortrait: boolean;
+            isTabletOrMobileDevice: boolean;
+        }) => {
+            const {parentHeight, isPortrait, isTabletOrMobileDevice} = props;
+            if (isTabletOrMobileDevice) {
+                if (parentHeight && isPortrait) {
+                    return {
+                        display: "flex",
+                        flexDirection: "column"
+                    };
+                } else if (parentHeight && !isPortrait) {
+                    return {
+                        display: "flex",
+                        flexDirection: "row"
+                    };
+                }
+            }
+            return {
+                display: "flex",
+                flexDirection: "column"
+            };
         },
         buttonContainer: {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            margin: theme.spacing(3),
-            flexGrow: 1,
+            padding: (props: {
+                parentHeight: number;
+                isPortrait: boolean;
+                isTabletOrMobileDevice: boolean;
+            }) =>
+                props.isTabletOrMobileDevice
+                    ? props.isPortrait
+                        ? "1rem 1rem 2rem 1rem"
+                        : "1rem"
+                    : "2rem",
             "& > * + *": {
                 marginLeft: "2rem"
             },
@@ -95,6 +167,8 @@ interface UserSettingsProps {
     clock: string;
     sendMessageOnCtrlEnter: string;
     messages: Message[];
+    parentHeight: number;
+    isPortrait: boolean;
     setUsernameAction: (userName: string) => Dispatch;
     saveSettingsAction: (settings: Settings) => Dispatch;
     resetSettingsAction: () => Dispatch;
@@ -107,12 +181,15 @@ function UserSettings({
     clock,
     sendMessageOnCtrlEnter,
     messages,
+    parentHeight,
+    isPortrait,
     setUsernameAction,
     saveSettingsAction,
     resetSettingsAction,
     unreadMessageAction
 }: UserSettingsProps): React.FunctionComponentElement<UserSettingsProps> {
-    const classes = useStyles();
+    const isTabletOrMobileDevice = useMediaQuery({maxDeviceWidth: 1224});
+    const classes = useStyles({parentHeight, isPortrait, isTabletOrMobileDevice});
     const [username, setUsername] = useState(userName);
     const [themeValue, setThemeValue] = useState(theme);
     const [clockValue, setClockValue] = useState(clock);
@@ -193,23 +270,23 @@ function UserSettings({
     };
 
     return (
-        <Container maxWidth="xl" className={classes.root} disableGutters>
-            <Paper className={classes.contentContainer} elevation={3}>
-                <Box component="div" className={classes.listContainer}>
-                    <form className={classes.form} onSubmit={handleFormSubmit}>
-                        <FormControl error={false} className={classes.formControl}>
-                            <FormLabel color="primary">Username</FormLabel>
-                            <TextInput
-                                labelText=""
-                                placeHolder="3 to 50 characters long"
-                                marginType={marginType.normal}
-                                inputSize={inputSize.small}
-                                inputVariant={inputVariant.outlined}
-                                inputValue={username}
-                                onInputChange={handleChangeUserName}
-                                onKeyPress={() => null}
-                            />
-                        </FormControl>
+        <Paper className={classes.contentContainer} elevation={3}>
+            <Box component="div" className={classes.listContainer}>
+                <form className={classes.form} onSubmit={handleFormSubmit}>
+                    <FormControl error={false} className={classes.formControl}>
+                        <FormLabel color="primary">Username</FormLabel>
+                        <TextInput
+                            labelText=""
+                            placeHolder="3 to 50 characters long"
+                            marginType={marginType.dense}
+                            inputSize={inputSize.small}
+                            inputVariant={inputVariant.outlined}
+                            inputValue={username}
+                            onInputChange={handleChangeUserName}
+                            onKeyPress={() => null}
+                        />
+                    </FormControl>
+                    <Box component="div" className={classes.radioGroupContainer}>
                         <FormRadioGroup
                             label="Interface Theme"
                             onChange={handleThemeChange}
@@ -231,29 +308,24 @@ function UserSettings({
                             radioLabels={["On", "Off"]}
                             radioValues={["true", "false"]}
                         />
-                        <Box className={classes.buttonContainer}>
-                            <Button
-                                variant="contained"
-                                size="large"
-                                color="primary"
-                                type="button"
-                                onClick={handleResetSettings}
-                            >
-                                Reset to Defaults
-                            </Button>
-                            <Button
-                                variant="contained"
-                                size="large"
-                                color="secondary"
-                                type="submit"
-                            >
-                                Save Settings
-                            </Button>
-                        </Box>
-                    </form>
-                </Box>
-            </Paper>
-        </Container>
+                    </Box>
+                    <Box className={classes.buttonContainer}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            color="primary"
+                            type="button"
+                            onClick={handleResetSettings}
+                        >
+                            Reset to Defaults
+                        </Button>
+                        <Button variant="contained" size="large" color="secondary" type="submit">
+                            Save Settings
+                        </Button>
+                    </Box>
+                </form>
+            </Box>
+        </Paper>
     );
 }
 

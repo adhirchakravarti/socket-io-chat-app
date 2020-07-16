@@ -3,7 +3,6 @@ import {
     SEND_MESSAGE,
     SET_USERNAME,
     RECEIVE_MESSAGE,
-    GET_INITIAL_USERNAME,
     SET_THEME,
     SAVE_SETTINGS,
     RESET_SETTINGS,
@@ -31,10 +30,6 @@ interface SetUsernameAction {
     payload: {
         userName: string;
     };
-}
-
-interface GetInitialUserNameAction {
-    type: typeof GET_INITIAL_USERNAME;
 }
 
 interface SetThemeAction {
@@ -94,12 +89,6 @@ export function setUsername(userName: string): SetUsernameAction {
     };
 }
 
-export function getInitialUserName(): GetInitialUserNameAction {
-    return {
-        type: GET_INITIAL_USERNAME
-    };
-}
-
 export function setTheme(theme: string): SetThemeAction {
     return {
         type: SET_THEME,
@@ -146,7 +135,6 @@ export type ChatServerActionTypes =
     | SendMessageAction
     | ReceiveMessageAction
     | SetUsernameAction
-    | GetInitialUserNameAction
     | SetThemeAction
     | SaveSettingsAction
     | ResetSettingsAction

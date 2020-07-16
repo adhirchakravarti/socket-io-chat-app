@@ -1,60 +1,72 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import {compose, Dispatch} from "redux";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
 import {v4 as uuidv4} from "uuid";
-// import Grid from "@material-ui/core/Grid";
+import {useMediaQuery} from "react-responsive";
+
+import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import {withStyles, Theme, StyleRules} from "@material-ui/core/styles";
+import {Theme, StyleRules, makeStyles, createStyles} from "@material-ui/core/styles";
 import ChatInput from "../ChatInput";
 import ChatMessageList from "../ChatMessageList";
 import {Message} from "../../types/index";
-import {
-    sendMessage,
-    receiveMessage,
-    getInitialUserName,
-    resetUnreadMessageCount
-} from "../../store/chatServerActions";
+import {sendMessage, resetUnreadMessageCount} from "../../store/chatServerActions";
 
-const styles = (theme: Theme): StyleRules => ({
-    root: {
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        flexWrap: "nowrap",
-        backgroundColor: theme.palette.background.paper
-    },
-    chatContainer: {
-        display: "flex",
-        flexDirection: "column",
-        flexGrow: 1
-    },
-    listContainer: {
-        display: "flex",
-        height: "67vh",
-        [theme.breakpoints.down("md")]: {
-            height: "70vh"
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            flexWrap: "nowrap",
+            backgroundColor: theme.palette.background.paper
         },
-        [theme.breakpoints.down("xs")]: {
-            height: "72vh"
+        chatContainer: (props: {
+            parentHeight: number;
+            isPortrait: boolean;
+            isTabletOrMobileDevice: boolean;
+            maxHeight: number;
+        }) => {
+            const {parentHeight, maxHeight} = props;
+            return {
+                display: "flex",
+                flexDirection: "column",
+                flexGrow: 1,
+                maxHeight: maxHeight ? ((maxHeight + 10) / 100) * parentHeight : "inherit"
+            };
+        },
+        listContainer: {
+            display: "flex",
+            height: (props: {
+                parentHeight: number;
+                isPortrait: boolean;
+                isTabletOrMobileDevice: boolean;
+            }) => {
+                const {parentHeight, isPortrait, isTabletOrMobileDevice} = props;
+                if (isTabletOrMobileDevice) {
+                    if (parentHeight && isPortrait) {
+                        return parentHeight * 0.65;
+                    } else if (parentHeight && !isPortrait) {
+                        return parentHeight * 0.35;
+                    }
+                } else {
+                    if (parentHeight && isPortrait) {
+                        return parentHeight * 0.7;
+                    } else if (parentHeight && !isPortrait) {
+                        return parentHeight * 0.65;
+                    }
+                }
+            }
+        },
+        input: {
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "stretch"
         }
-    },
-    input: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "stretch"
-    }
-});
-
-type ChatWindowClasses = {
-    root: string;
-    chatContainer: string;
-    listContainer: string;
-    input: string;
-};
+    })
+);
 
 type ComponentState = {
     socket: SocketIO.Socket;
@@ -63,15 +75,15 @@ type ComponentState = {
 };
 
 interface ChatWindowProps {
-    classes: ChatWindowClasses;
     messages: Message[];
     userName: string;
     socketId: string;
     clock: string;
     sendMessageOnCtrlEnter: string;
-    getInitialUserName: () => Dispatch;
+    parentHeight: number;
+    maxHeight: number;
+    isPortrait: boolean;
     sendNewMessage: (message) => Dispatch;
-    receiveNewMessage: (message) => Dispatch;
     resetUnreadMessageCountAction: () => Dispatch;
 }
 
@@ -88,58 +100,54 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getInitialUserName: () => dispatch(getInitialUserName()),
         sendNewMessage: (message: Message) => dispatch(sendMessage(message)),
-        receiveNewMessage: (message: Message) => dispatch(receiveMessage(message)),
         resetUnreadMessageCountAction: () => dispatch(resetUnreadMessageCount())
     };
 };
 
-class ChatWindow extends React.Component<ChatWindowProps> {
-    state = {
-        messages: [],
-        userName: ""
-    };
+function ChatWindow({
+    messages,
+    userName,
+    socketId,
+    clock,
+    sendMessageOnCtrlEnter,
+    parentHeight,
+    isPortrait,
+    maxHeight,
+    sendNewMessage,
+    resetUnreadMessageCountAction
+}: ChatWindowProps): React.FunctionComponentElement<ChatWindowProps> {
+    const isTabletOrMobileDevice = useMediaQuery({maxDeviceWidth: 1224});
+    const classes = useStyles({parentHeight, isPortrait, isTabletOrMobileDevice, maxHeight});
+    useEffect(() => {
+        resetUnreadMessageCountAction();
+    }, []);
 
-    componentDidMount() {
-        this.props.resetUnreadMessageCountAction();
-    }
-
-    handleInputMessage = (message: string): void => {
+    const handleInputMessage = (message: string): void => {
         const newMessage = {
             id: uuidv4(),
             text: message,
-            sender: this.props.userName,
-            socketId: this.props.socketId,
+            sender: userName,
+            socketId: socketId,
             time: new Date().getTime()
         };
-        const {sendNewMessage} = this.props;
         sendNewMessage(newMessage);
     };
-    render() {
-        const {classes} = this.props;
-        return (
-            <Container maxWidth="xl" className={classes.root} disableGutters>
-                <Paper className={classes.chatContainer} elevation={3}>
-                    <Box component="div" className={classes.listContainer}>
-                        <ChatMessageList
-                            messages={this.props.messages}
-                            socketId={this.props.socketId}
-                            clock={this.props.clock}
-                        />
-                    </Box>
-                    <Box className={classes.input}>
-                        <ChatInput
-                            onSubmit={this.handleInputMessage}
-                            sendMessageOnCtrlEnter={this.props.sendMessageOnCtrlEnter}
-                        />
-                    </Box>
-                </Paper>
-            </Container>
-        );
-    }
+    return (
+        <Paper className={classes.chatContainer} elevation={3}>
+            <Box component="div" className={classes.listContainer}>
+                <ChatMessageList messages={messages} socketId={socketId} clock={clock} />
+            </Box>
+            <Box className={classes.input}>
+                <ChatInput
+                    onSubmit={handleInputMessage}
+                    sendMessageOnCtrlEnter={sendMessageOnCtrlEnter}
+                />
+            </Box>
+        </Paper>
+    );
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect)(withStyles(styles)(ChatWindow));
+export default compose(withConnect)(ChatWindow);

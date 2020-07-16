@@ -4,9 +4,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import {makeStyles, createStyles, Theme} from "@material-ui/core/styles";
+import {makeStyles, createStyles} from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         radioGroup: {
             display: "flex",
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
             flexWrap: "wrap"
         },
         formControl: {
-            margin: theme.spacing(3),
+            padding: "1rem 1rem",
             display: "flex",
             flexGrow: 1
         }
