@@ -40,7 +40,6 @@ const useStyles = makeStyles(() =>
 );
 
 const mapStateToProps = (state) => {
-    console.log("State at App = ", state);
     return {
         theme: state.chatReducer.theme,
         unreadMessageCount: state.chatReducer.unreadMessageCount
@@ -55,8 +54,8 @@ interface AppProps {
 function App({theme, unreadMessageCount}: AppProps): React.FunctionComponentElement<AppProps> {
     const [visible, setVisible] = useState(true);
     const {height} = useWindowHeight();
-    console.log("window height = ", height);
     const classes = useStyles({height});
+    const isPortrait = useMediaQuery({query: "(orientation: portrait)"});
     const makeVisible = () => {
         setVisible((prevState) => !prevState);
     };
@@ -91,20 +90,19 @@ function App({theme, unreadMessageCount}: AppProps): React.FunctionComponentElem
         },
         {label: "Settings", link: "settings", icon: <SettingsIcon />}
     ];
-    const isPortrait = useMediaQuery({query: "(orientation: portrait)"});
-    console.log("is Portrait? ", isPortrait);
+
     return (
         <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
             <CssBaseline />
             <GlobalResponsiveFont />
             <Router>
-                <Switch>
-                    <Box className={classes.gridContainer}>
-                        <Box>
-                            <Header title="Chat-App" />
-                            <TabPanel tabs={tabs} />
-                        </Box>
-                        <Box className={classes.content}>
+                <Box className={classes.gridContainer}>
+                    <Box>
+                        <Header title="Chat-App" />
+                        <TabPanel tabs={tabs} />
+                    </Box>
+                    <Box className={classes.content}>
+                        <Switch>
                             <Route path="/" exact>
                                 <Redirect to="/chat" />
                             </Route>
@@ -131,9 +129,9 @@ function App({theme, unreadMessageCount}: AppProps): React.FunctionComponentElem
                                     );
                                 }}
                             />
-                        </Box>
+                        </Switch>
                     </Box>
-                </Switch>
+                </Box>
             </Router>
         </ThemeProvider>
     );

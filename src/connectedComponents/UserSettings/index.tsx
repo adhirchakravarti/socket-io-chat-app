@@ -140,7 +140,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const mapStateToProps = (state) => {
-    console.log("State at UserSettings = ", state);
     return {
         userName: state.chatReducer.userName,
         theme: state.chatReducer.theme,

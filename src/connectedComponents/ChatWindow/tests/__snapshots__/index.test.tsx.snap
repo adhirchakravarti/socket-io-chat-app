@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChatWindow /> renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root makeStyles-chatContainer makeStyles-chatContainer MuiPaper-elevation3 MuiPaper-rounded"
+  >
+    <div
+      class="MuiBox-root MuiBox-root makeStyles-listContainer makeStyles-listContainer"
+    >
+      <ul
+        class="MuiList-root makeStyles-list MuiList-padding"
+      />
+    </div>
+    <div
+      class="MuiBox-root MuiBox-root makeStyles-input"
+    >
+      <div
+        class="MuiBox-root MuiBox-root makeStyles-root"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root makeStyles-input MuiFormControl-marginDense"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined"
+            data-shrink="true"
+          >
+            Chat
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+              placeholder="Enter chat message and click the send button"
+              type="text"
+              value=""
+            />
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+              >
+                <span>
+                  Chat
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-containedSizeLarge MuiButton-sizeLarge"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Send
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

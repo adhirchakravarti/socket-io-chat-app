@@ -75,7 +75,7 @@ type ComponentState = {
     userName: string;
 };
 
-interface ChatWindowProps {
+export interface ChatWindowProps {
     messages: Message[];
     userName: string;
     socketId: string;
@@ -89,7 +89,6 @@ interface ChatWindowProps {
 }
 
 const mapStateToProps = (state) => {
-    console.log("reducer state = ", state);
     return {
         messages: state.chatReducer.messages,
         userName: state.chatReducer.userName,
