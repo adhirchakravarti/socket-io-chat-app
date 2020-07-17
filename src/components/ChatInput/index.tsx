@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import Button from "@material-ui/core/Button";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
 import TextInput from "../TextInput";
@@ -31,6 +31,7 @@ function ChatInput({
 }: ChatInputProps): React.FunctionComponentElement<ChatInputProps> {
     const classes = useStyles();
     const [inputValue, setInputValue] = useState("");
+    const textRef = useRef<HTMLInputElement>();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {value} = e.target;
@@ -47,6 +48,7 @@ function ChatInput({
         if (inputValue.trim().length > 0) {
             onSubmit(inputValue);
             setInputValue("");
+            textRef.current.focus();
         }
     };
 
@@ -65,6 +67,7 @@ function ChatInput({
                 inputValue={inputValue}
                 onInputChange={handleInputChange}
                 onKeyPress={handleKeyPress}
+                inputRef={textRef}
             />
             <Button
                 variant="contained"

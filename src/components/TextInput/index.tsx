@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Ref} from "react";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
 import {marginType, inputSize, inputVariant} from "../../types/index";
@@ -31,6 +31,7 @@ interface TextInputProps {
     labelText: string;
     inputSize: inputSize;
     inputVariant: inputVariant;
+    inputRef?: Ref<HTMLInputElement>;
 }
 
 function TextInput({
@@ -41,7 +42,8 @@ function TextInput({
     marginType,
     labelText,
     inputSize,
-    inputVariant
+    inputVariant,
+    inputRef
 }: TextInputProps): React.FunctionComponentElement<TextInputProps> {
     const classes = useStyles();
 
@@ -59,6 +61,7 @@ function TextInput({
             onChange={onInputChange}
             onKeyPress={onKeyPress}
             value={inputValue}
+            inputRef={inputRef}
         />
     );
 }

@@ -58,7 +58,6 @@ const chatReducer: Reducer<ChatState, ChatServerActionTypes> = produce((draft, a
                 settings
             } = action.payload;
             sessionStorage.setItem("settings", JSON.stringify(settings));
-            console.log(sessionStorage);
             draft.userName = userName;
             draft.theme = theme;
             draft.clock = clock;
@@ -75,9 +74,7 @@ const chatReducer: Reducer<ChatState, ChatServerActionTypes> = produce((draft, a
         }
 
         case LOAD_SETTINGS: {
-            console.log(sessionStorage.getItem("settings"));
             const settings = JSON.parse(sessionStorage.getItem("settings"));
-            console.log(settings);
             const {userName, theme, clock, sendMessageOnCtrlEnter} = settings;
             draft.userName = userName;
             draft.theme = theme;
