@@ -32,12 +32,12 @@ To execute the server and client separately, please enter the commands in separa
 
 # Create a checkbox list of all the features required by this homework and check the ones you were able to accomplish
 
--   [x] You have to use React as your framework: Done
--   [] You have to use CSS preprocessors;
+-   [x] You have to use React as your framework:
+-   [ ] You have to use CSS preprocessors - **_used Material-UI CSS-in-JS instead_**
 -   [x] You have to write the app in TypeScript;
--   [x] It should work on every desktop and phone, so you have to make responsive design. And it has to work both portrait and landscape orientation;
+-   [x] It should work on every desktop and phone, so you have to make responsive design. And it has to work both portrait and landscape orientation; **_Not satisfied with current solution; needs improvement_**
 -   [x] It should work on desktop/tablet/phone at least on the following browsers: Chrome, Firefox and Safari. Consider the latest versions for each browser;
 -   [x] Please, do not use any tool like or similar to create-react-app;
--   [x] Write at least some tests that would cover the main functionality of your app. We do not expect to be 100% test covered;
+-   [x] Write at least some tests that would cover the main functionality of your app. We do not expect to be 100% test covered; **_Need more time for tests, only have a few snapshot tests at the moment_**
 -   [x] Write clean, commented, small and modularized code;
 -   [x] Working code, that works if we serve it with the http server and open in a browser;
