@@ -6,8 +6,7 @@ const io = require("socket.io").listen(server);
 const {v4: uuidv4} = require("uuid");
 
 const userServ = require("./users.ts");
-console.log(userServ.addNewUser);
-const msgServ = require("./messages.ts");
+// const msgServ = require("./messages.ts"); // something I'd like to use in the future
 
 const disconnectReasons = {
     client: ["client namespace disconnect", "ping timeout", "transport close"],
@@ -25,31 +24,19 @@ const createMessage = (text: string) => {
 };
 
 io.on("connection", function (socket) {
-    console.log("connection!!", socket.id, socket.handshake.time);
     const createdUserName = userServ.addNewUser(socket);
-    console.log(createdUserName, userServ.getUsers());
-    // socket.emit("welcome", user);
     socket.emit("action", {type: "chatClient/SOCKET_ID", payload: {socketId: socket.id}});
     socket.emit("action", {
         type: "chatClient/SET_USERNAME_SUCCESS",
         payload: {userName: createdUserName}
     });
     const joinNotificationMessage = createMessage(`${createdUserName} has joined the chat!`);
-    // socket.broadcast.emit("broadcast", joinNotificationMessage);
     io.emit("action", {
         type: "chatClient/RECEIVE_MESSAGE",
         payload: {message: joinNotificationMessage}
     });
 
-    socket.on("chat message", function (msg) {
-        console.log(msg);
-        const added = msgServ.addMessage(msg);
-        console.log(added);
-        io.emit("message", msg); // perhaps should be socket.broadcast.emit()?
-    });
-
     socket.on("disconnect", (reason) => {
-        console.log("reason for disconnect = ", reason);
         if (disconnectReasons.client.includes(reason)) {
             userServ
                 .removeUser(socket.id)
@@ -74,11 +61,9 @@ io.on("connection", function (socket) {
 
     socket.on("action", (action) => {
         if (action.type === "chatServer/hello") {
-            console.log("Got hello data!", action.data);
             socket.emit("action", {type: "message", data: "good day!"});
         } else if (action.type === "chatServer/SET_USERNAME") {
             const {userName} = action.payload;
-            console.log(userName, createdUserName, socket.id, userServ.getUsers());
             userServ
                 .changeUserName(socket.id, userName)
                 .then((response) => {
@@ -96,8 +81,7 @@ io.on("connection", function (socket) {
                         });
                     }
                 })
-                .catch((reason) => {
-                    console.log(reason);
+                .catch(() => {
                     const newMessage = createMessage("Failed to change username!");
                     socket.emit("action", {
                         type: "chatClient/RECEIVE_MESSAGE",
@@ -114,7 +98,6 @@ io.on("connection", function (socket) {
     });
 });
 
-// console.log(server);
 function cback() {
     console.log(`server running at port ${port}`);
 }

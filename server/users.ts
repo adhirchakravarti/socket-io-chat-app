@@ -1,6 +1,3 @@
-// const userType = require("../src/components/ChatWindow/types");
-// console.log(userType);
-
 class UserService {
     users = [];
 
@@ -52,8 +49,7 @@ class UserService {
                 this.users = [...users];
                 resolve("success");
             }
-            reject("not found");
-            // return `user with socketId ${socketId} not found!`;
+            reject();
         });
     }
 

@@ -34,7 +34,7 @@ To execute the server and client separately, please enter the commands in separa
 
 -   [x] You have to use React as your framework:
 -   [ ] You have to use CSS preprocessors - **_used Material-UI CSS-in-JS instead_**
--   [x] You have to write the app in TypeScript;
+-   [x] You have to write the app in TypeScript; **_Have tried to do so; Am a beginner with TypeScript_**
 -   [x] It should work on every desktop and phone, so you have to make responsive design. And it has to work both portrait and landscape orientation; **_Not satisfied with current solution; needs improvement_**
 -   [x] It should work on desktop/tablet/phone at least on the following browsers: Chrome, Firefox and Safari. Consider the latest versions for each browser;
 -   [x] Please, do not use any tool like or similar to create-react-app;
