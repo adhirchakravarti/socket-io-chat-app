@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 
-export type useWindowHeightType = {
+type useWindowHeightType = {
     height: number;
 };
 

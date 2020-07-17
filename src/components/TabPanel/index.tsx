@@ -14,7 +14,7 @@ interface TabPanelProps {
     tabs: ITab[];
 }
 
-function TabPanel({tabs}: TabPanelProps): JSX.Element {
+function TabPanel({tabs}: TabPanelProps): React.FunctionComponentElement<TabPanelProps> {
     const location = useLocation();
     const [tabValue, setTabValue] = useState(() => {
         if (location.pathname.includes("/settings")) {

@@ -9,7 +9,7 @@ import {
     UNREAD_MESSAGE,
     RESET_UNREAD_MESSAGE_COUNT,
     LOAD_SETTINGS
-} from "./chatServerConstants";
+} from "./constants";
 
 interface SendMessageAction {
     type: typeof SEND_MESSAGE;

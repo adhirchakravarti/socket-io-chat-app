@@ -7,7 +7,7 @@ interface HeaderProps {
     title: string;
 }
 
-function Header({title}: HeaderProps): JSX.Element {
+function Header({title}: HeaderProps): React.FunctionComponentElement<HeaderProps> {
     return (
         <AppBar position="static">
             <Toolbar>

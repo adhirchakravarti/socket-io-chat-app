@@ -25,7 +25,10 @@ interface ChatInputProps {
     sendMessageOnCtrlEnter: string;
 }
 
-function ChatInput({onSubmit, sendMessageOnCtrlEnter}: ChatInputProps): JSX.Element {
+function ChatInput({
+    onSubmit,
+    sendMessageOnCtrlEnter
+}: ChatInputProps): React.FunctionComponentElement<ChatInputProps> {
     const classes = useStyles();
     const [inputValue, setInputValue] = useState("");
 

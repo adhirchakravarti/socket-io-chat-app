@@ -1,22 +1,20 @@
 import React, {useState, useEffect} from "react";
 import {connect} from "react-redux";
+import {Dispatch} from "redux";
+import {useMediaQuery} from "react-responsive";
+
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import {marginType, inputSize, inputVariant, Settings, Message} from "../../types/index";
 import {makeStyles, Theme, createStyles} from "@material-ui/core/styles";
-import TextInput from "../TextInput";
-import {
-    setUsername,
-    saveSettings,
-    resetSettings,
-    unreadMessage
-} from "../../store/chatServerActions";
-import FormRadioGroup from "../FormRadioGroup";
-import {Dispatch} from "redux";
-import {useMediaQuery} from "react-responsive";
+import TextInput from "../../components/TextInput";
+
+import {setUsername, saveSettings, resetSettings, unreadMessage} from "../../store/actions";
+import {marginType, inputSize, inputVariant, Settings, Message} from "../../types/index";
+
+import FormRadioGroup from "../../components/FormRadioGroup";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

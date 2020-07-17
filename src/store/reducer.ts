@@ -10,9 +10,9 @@ import {
     UNREAD_MESSAGE,
     RESET_UNREAD_MESSAGE_COUNT,
     LOAD_SETTINGS
-} from "./chatServerConstants";
+} from "./constants";
 import {ChatState, Message} from "../types/index";
-import {ChatServerActionTypes} from "./chatServerActions";
+import {ChatServerActionTypes} from "./actions";
 import {Reducer} from "react";
 
 export const initialState: ChatState = {

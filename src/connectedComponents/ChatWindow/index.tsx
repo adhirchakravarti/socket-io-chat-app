@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import {compose, Dispatch} from "redux";
@@ -7,11 +6,13 @@ import {useMediaQuery} from "react-responsive";
 
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import {Theme, StyleRules, makeStyles, createStyles} from "@material-ui/core/styles";
-import ChatInput from "../ChatInput";
-import ChatMessageList from "../ChatMessageList";
+import {Theme, makeStyles, createStyles} from "@material-ui/core/styles";
+
+import ChatInput from "../../components/ChatInput";
+import ChatMessageList from "../../components/ChatMessageList";
+
 import {Message} from "../../types/index";
-import {sendMessage, resetUnreadMessageCount} from "../../store/chatServerActions";
+import {sendMessage, resetUnreadMessageCount} from "../../store/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -11,24 +11,19 @@ interface LinkTabProps {
     icon: React.FunctionComponentElement<number>;
 }
 
-export interface MatchParams {
-    name: string;
-}
-
-function LinkTab({link, label, icon, ...restProps}: LinkTabProps): JSX.Element {
+function LinkTab({
+    link,
+    label,
+    icon,
+    ...restProps
+}: LinkTabProps): React.FunctionComponentElement<LinkTabProps> {
     const history = useHistory();
-    // const {icon: iconBadge} = restProps;
-    // const match = useRouteMatch<MatchParams>("/chat/:name");
-    // const {
-    //     params: {name}
-    // } = match;
     return (
         <Tab
             component="a"
             icon={icon}
             onClick={(event) => {
                 event.preventDefault();
-                // const encodedName = encodeURIComponent(name);
                 history.push(`/${link}`);
             }}
             label={label}

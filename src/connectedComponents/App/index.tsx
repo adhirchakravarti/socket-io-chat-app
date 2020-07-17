@@ -11,11 +11,11 @@ import GlobalResponsiveFont from "../../globalResponsiveFont";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import useWindowHeight from "../../utils/useWindowHeight";
 
-import Header from "../Header";
+import Header from "../../components/Header";
 import UserSettings from "../UserSettings";
 import ChatWindow from "../ChatWindow";
-import TabPanel from "../TabPanel";
-import BadgeIcon from "../BadgeIcon";
+import TabPanel from "../../components/TabPanel";
+import BadgeIcon from "../../components/BadgeIcon";
 import {lightTheme, darkTheme} from "../../theme";
 import {useMediaQuery} from "react-responsive";
 
