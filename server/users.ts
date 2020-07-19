@@ -23,19 +23,33 @@ class UserService {
         });
     }
 
-    addNewUser(socket: SocketIO.Socket) {
-        const createdUser = this.generateUserName();
-        const userIndex = this.users.findIndex((user) => user.name === createdUser);
-        if (userIndex >= 0) {
-            this.addNewUser(socket);
+    addNewUser(socket: SocketIO.Socket, userName?) {
+        if (userName) {
+            const userIndex = this.users.findIndex((user) => user.name === userName);
+            if (userIndex >= 0) {
+                this.addNewUser(socket);
+            } else {
+                this.users.push({
+                    socketId: socket.id,
+                    name: userName,
+                    joined: new Date(socket.handshake.time).getTime()
+                });
+                return userName;
+            }
         } else {
-            this.users.push({
-                socketId: socket.id,
-                name: createdUser,
-                joined: new Date(socket.handshake.time).getTime()
-            });
+            const createdUser = this.generateUserName();
+            const userIndex = this.users.findIndex((user) => user.name === createdUser);
+            if (userIndex >= 0) {
+                this.addNewUser(socket);
+            } else {
+                this.users.push({
+                    socketId: socket.id,
+                    name: createdUser,
+                    joined: new Date(socket.handshake.time).getTime()
+                });
+                return createdUser;
+            }
         }
-        return createdUser;
     }
 
     changeUserName(socketId: string, newUserName: string) {

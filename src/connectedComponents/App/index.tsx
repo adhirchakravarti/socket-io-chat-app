@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
+import {Dispatch} from "redux";
 
 import Box from "@material-ui/core/Box";
 import MailIcon from "@material-ui/icons/Mail";
@@ -18,6 +19,7 @@ import TabPanel from "../../components/TabPanel";
 import BadgeIcon from "../../components/BadgeIcon";
 import {lightTheme, darkTheme} from "../../theme";
 import {useMediaQuery} from "react-responsive";
+import {loadSettings} from "../../store/actions";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -41,17 +43,31 @@ const useStyles = makeStyles(() =>
 
 const mapStateToProps = (state) => {
     return {
+        socketId: state.chatReducer.socketId,
         theme: state.chatReducer.theme,
         unreadMessageCount: state.chatReducer.unreadMessageCount
     };
 };
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadSettingsAction: () => dispatch(loadSettings())
+    };
+};
+
 interface AppProps {
+    socketId: string;
     theme: string;
     unreadMessageCount: number;
+    loadSettingsAction: () => Dispatch;
 }
 
-function App({theme, unreadMessageCount}: AppProps): React.FunctionComponentElement<AppProps> {
+function App({
+    socketId,
+    theme,
+    unreadMessageCount,
+    loadSettingsAction
+}: AppProps): React.FunctionComponentElement<AppProps> {
     const [visible, setVisible] = useState(true);
     const {height} = useWindowHeight();
     const classes = useStyles({height});
@@ -59,6 +75,14 @@ function App({theme, unreadMessageCount}: AppProps): React.FunctionComponentElem
     const makeVisible = () => {
         setVisible((prevState) => !prevState);
     };
+    useEffect(() => {
+        if (socketId) {
+            const savedSettings = JSON.parse(sessionStorage.getItem("settings"));
+            if (savedSettings && Object.keys(savedSettings).length > 0) {
+                loadSettingsAction();
+            }
+        }
+    }, [socketId]);
     useEffect(() => {
         if (unreadMessageCount > 0) {
             setVisible(false);
@@ -137,4 +161,4 @@ function App({theme, unreadMessageCount}: AppProps): React.FunctionComponentElem
     );
 }
 
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import Button from "@material-ui/core/Button";
 import {makeStyles, createStyles} from "@material-ui/core/styles";
 import TextInput from "../TextInput";
@@ -32,6 +32,10 @@ function ChatInput({
     const classes = useStyles();
     const [inputValue, setInputValue] = useState("");
     const textRef = useRef<HTMLInputElement>();
+
+    useEffect(() => {
+        textRef.current.focus();
+    }, []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {value} = e.target;

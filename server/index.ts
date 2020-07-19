@@ -24,7 +24,16 @@ const createMessage = (text: string) => {
 };
 
 io.on("connection", function (socket) {
-    const createdUserName = userServ.addNewUser(socket);
+    console.log(socket.handshake);
+    const {query} = socket.handshake;
+    let createdUserName = null;
+    if (query.savedUsername) {
+        const {savedUsername} = query;
+        createdUserName = userServ.addNewUser(socket, savedUsername);
+    } else {
+        createdUserName = userServ.addNewUser(socket);
+    }
+    console.log(userServ.getUsers());
     socket.emit("action", {type: "chatClient/SOCKET_ID", payload: {socketId: socket.id}});
     socket.emit("action", {
         type: "chatClient/SET_USERNAME_SUCCESS",
