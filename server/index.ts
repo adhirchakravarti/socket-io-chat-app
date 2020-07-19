@@ -33,7 +33,6 @@ io.on("connection", function (socket) {
     } else {
         createdUserName = userServ.addNewUser(socket);
     }
-    console.log(userServ.getUsers());
     socket.emit("action", {type: "chatClient/SOCKET_ID", payload: {socketId: socket.id}});
     socket.emit("action", {
         type: "chatClient/SET_USERNAME_SUCCESS",
