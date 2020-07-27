@@ -6,6 +6,7 @@ import {makeStyles, createStyles, Theme} from "@material-ui/core/styles";
 import {Message as ChatMessage} from "../../types/index";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+import MessageMetadata from "../MessageMetadata";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -33,26 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             flexDirection: "column",
             padding: "0.5rem 1rem"
-        },
-        metaContainer: {
-            display: "flex",
-            justifyContent: "flex-start",
-            margin: "0rem 0rem 1rem 0rem",
-            [theme.breakpoints.down("xs")]: {
-                display: "flex",
-                flexDirection: "column"
-            },
-            "@media (max-width: 300px)": {
-                maxWidth: "90%"
-            }
-        },
-        image: {
-            maxWidth: "12rem",
-            maxHeight: "6.5rem",
-            margin: "0rem 0rem 0rem 1rem",
-            [theme.breakpoints.down("xs")]: {
-                margin: "1rem 0rem 0rem 0rem"
-            }
         }
     })
 );
@@ -77,22 +58,8 @@ function ChatMessage({
                     <Linkify>{message.text}</Linkify>
                 </Typography>
                 {message.links &&
-                    message.links.map((link) => {
-                        return (
-                            <Box className={classes.metaContainer} key={link.url}>
-                                <Box>
-                                    <Typography>{link.title}</Typography>
-                                    <Typography variant="caption">{link.description}</Typography>
-                                </Box>
-                                <Box>
-                                    <img className={classes.image} src={link.image} alt="Image" />
-                                </Box>
-                            </Box>
-                        );
-                    })}
-                <Typography variant="caption" gutterBottom>
-                    {message.sender}
-                </Typography>
+                    message.links.map((link) => <MessageMetadata link={link} key={link.url} />)}
+                <Typography gutterBottom>{message.sender}</Typography>
                 <Typography variant="caption" gutterBottom>
                     {moment(message.time).format(timeFormat)}
                 </Typography>
