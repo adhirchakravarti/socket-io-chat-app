@@ -32,7 +32,15 @@ export interface Message {
     socketId: string;
     text: string;
     time: number;
+    links?: LinkMeta[];
 }
+
+export type LinkMeta = {
+    url: string;
+    title: string;
+    image: string;
+    description: string;
+};
 
 export interface Settings {
     userName: string;

@@ -1,9 +1,13 @@
+import {Message, LinkMeta} from "src/types";
+
+const getUrlMetadata = require("../src/utils/getUrlMetadata");
 const port = process.env.PORT || 3002;
 const express = require("express");
 const app = express();
 const server = app.listen(port, cback);
 const io = require("socket.io").listen(server);
 const {v4: uuidv4} = require("uuid");
+const linkify = require("linkifyjs");
 
 const userServ = require("./users.ts");
 // const msgServ = require("./messages.ts"); // something I'd like to use in the future
@@ -23,8 +27,18 @@ const createMessage = (text: string) => {
     };
 };
 
+const createLinkMessage = (message: Message, links: LinkMeta[]) => {
+    return {
+        id: message.id,
+        text: message.text,
+        links: links,
+        time: message.time,
+        sender: message.sender,
+        socketId: message.socketId
+    };
+};
+
 io.on("connection", function (socket) {
-    console.log(socket.handshake);
     const {query} = socket.handshake;
     let createdUserName = null;
     if (query.savedUsername) {
@@ -98,10 +112,31 @@ io.on("connection", function (socket) {
                 });
         } else if (action.type === "chatServer/SEND_MESSAGE") {
             const {message} = action.payload;
-            io.emit("action", {
-                type: "chatClient/RECEIVE_MESSAGE",
-                payload: {message: message}
-            });
+            const links = linkify.find(message.text);
+            if (links.length > 0) {
+                const promiseArr = [];
+                links.forEach((link) => {
+                    if (link.type === "url") {
+                        const metaPromise = getUrlMetadata(link.href);
+                        promiseArr.push(metaPromise);
+                    }
+                });
+                Promise.all(promiseArr)
+                    .then((results) => {
+                        const linkData = results.filter((item) => item !== null);
+                        const linkMessage = createLinkMessage(message, linkData);
+                        io.emit("action", {
+                            type: "chatClient/RECEIVE_MESSAGE",
+                            payload: {message: linkMessage}
+                        });
+                    })
+                    .catch((reason) => console.log("error reason! = ", reason));
+            } else {
+                io.emit("action", {
+                    type: "chatClient/RECEIVE_MESSAGE",
+                    payload: {message: message}
+                });
+            }
         }
     });
 });

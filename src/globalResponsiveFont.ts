@@ -15,6 +15,9 @@ const GlobalResponsiveFont = withStyles({
             },
             "@media (max-width: 600px)": {
                 fontSize: 9.6
+            },
+            "@media (max-width: 300px)": {
+                fontSize: 8
             }
         }
     }
